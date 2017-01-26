@@ -1,0 +1,179 @@
+<% content_for :header_tags do %>
+  <%= javascript_include_tag 'sync', :plugin => 'redmine_facturaplus' %>
+<% end %>
+
+<fieldset>
+	<div class="splitcontentleft">
+		<p>
+			<label><%=l(:"facturaplus.label_bill_tracker")%></label>
+	    	<%= select_tag 'settings[bill_tracker]',
+	          ('<option></option>' +
+	            options_from_collection_for_select(Tracker.all, :id, :name, @settings['bill_tracker'])).html_safe %>
+		</p>
+
+		<p>
+			<label><%=l(:"facturaplus.label_amount_field")%></label>
+			<%
+		       if Setting.plugin_redmine_facturaplus['bill_tracker'].present? 
+		         options = ('<option></option>'+options_from_collection_for_select(Tracker.find(Setting.plugin_redmine_facturaplus['bill_tracker']).custom_fields.where(field_format: 'float'), :id, :name, @settings['amount_field'].to_i)).html_safe
+		       else
+		         options = ('<option></option>').html_safe
+		       end
+		     %>
+			<%= select_tag 'settings[amount_field]', options %>
+		</p>
+		<p>
+			<label><%=l(:"facturaplus.label_vat_field")%></label>
+			<%
+		       if Setting.plugin_redmine_facturaplus['bill_tracker'].present? 
+		         options = ('<option></option>'+options_from_collection_for_select(Tracker.find(Setting.plugin_redmine_facturaplus['bill_tracker']).custom_fields.where(field_format: 'list'), :id, :name, @settings['vat_field'].to_i)).html_safe
+		       else
+		         options = ('<option></option>').html_safe
+		       end
+		     %>
+			<%= select_tag 'settings[vat_field]', options %>
+		</p>
+		<p>
+			<label><%=l(:"facturaplus.label_billing_date_field")%></label>
+			<%
+		       if Setting.plugin_redmine_facturaplus['bill_tracker'].present? 
+		         options = ('<option></option>'+options_from_collection_for_select(Tracker.find(Setting.plugin_redmine_facturaplus['bill_tracker']).custom_fields.where(field_format: 'date'), :id, :name, @settings['billing_date_field'].to_i)).html_safe
+		       else
+		         options = ('<option></option>').html_safe
+		       end
+		     %>
+			<%= select_tag 'settings[billing_date_field]', options %>
+		</p>
+
+		<script>
+			$('#settings_bill_tracker').change(function(){
+				$('#settings_amount_field').load('/settings/show_tracker_custom_fields/float', {tracker: $('#settings_bill_tracker').val()});
+			});
+
+			$('#settings_bill_tracker').change(function(){
+				$('#settings_vat_field').load('/settings/show_tracker_custom_fields/list', {tracker: $('#settings_bill_tracker').val()});
+			});
+
+			$('#settings_bill_tracker').change(function(){
+				$('#settings_billing_date_field').load('/settings/show_tracker_custom_fields/date', {tracker: $('#settings_bill_tracker').val()});
+			});
+		</script>
+		
+		<fieldset>
+			<legend><%=l(:"facturaplus.label_billers")%></legend>
+			<p>
+				<label><%=l(:"facturaplus.label_biller_field")%></label>
+				<%
+			       if Setting.plugin_redmine_facturaplus['bill_tracker'].present? 
+			         options = ('<option></option>'+options_from_collection_for_select(Tracker.find(Setting.plugin_redmine_facturaplus['bill_tracker']).custom_fields.where(field_format: 'list'), :id, :name, @settings['biller_field'].to_i)).html_safe
+			       else
+			         options = ('<option></option>').html_safe
+			       end
+			     %>
+				<%= select_tag 'settings[biller_field]', options %>
+			</p>
+
+			<p>
+				<label><%=l(:"facturaplus.label_biller_field")%></label>
+				<%
+			       if Setting.plugin_redmine_facturaplus['biller_field'].present? 
+			         options = ('<option></option>'+options_for_select(CustomField.find(Setting.plugin_redmine_facturaplus['biller_field']).possible_values, @settings['billers'])).html_safe
+			       else
+			         options = ('<option></option>').html_safe
+			       end
+			     %>
+				<%= select_tag 'settings[billers]', options, :multiple => true %>
+			</p>
+
+			<script>
+				$('#settings_bill_tracker').change(function(){
+					$('#settings_biller_field').load('/settings/show_tracker_custom_fields/list', {tracker: $('#settings_bill_tracker').val()}, function(){
+						$('#settings_biller_field').trigger('change');
+					});
+				});
+
+				$('#settings_biller_field').change(function(){
+					$('#settings_billers').load('/settings/show_list_options', {custom_field: $('#settings_biller_field').val()});
+				});
+			</script>
+		</fieldset>
+
+		<fieldset>
+			<legend><%=l(:"facturaplus.label_clients")%></legend>
+			<p>
+				<label><%=l(:"facturaplus.label_client_field")%></label>
+				<%
+			       if Setting.plugin_redmine_facturaplus['bill_tracker'].present? 
+			         options = ('<option></option>'+options_from_collection_for_select(Tracker.find(Setting.plugin_redmine_facturaplus['bill_tracker']).custom_fields.where(field_format: 'list'), :id, :name, @settings['client_field'].to_i)).html_safe
+			       else
+			         options = ('<option></option>').html_safe
+			       end
+			     %>
+				<%= select_tag 'settings[client_field]', options %>
+				<%= link_to '', '#', :class => 'icon icon-reload', :onclick => "if (confirm('#{l(:'facturaplus.text_confirm_sync_client_field')}')){ sync_client_field($(#settings_client_field)); }", :title => l(:'facturaplus.label_sync_client_field') %>
+			</p>
+
+			<script>
+				$('#settings_bill_tracker').change(function(){
+					$('#settings_client_field').load('/settings/show_tracker_custom_fields/list', {tracker: $('#settings_bill_tracker').val()});
+			 	});
+
+			 	
+			</script>
+		</fieldset>
+	</div>
+	<div class="splitcontentright">
+		<fieldset>
+			<legend><%=l(:"facturaplus.label_statuses")%></legend>
+			<p>
+				<label><%=l(:"facturaplus.label_billed_statuses")%></label>
+				<%
+			       if Setting.plugin_redmine_facturaplus['bill_tracker'].present? 
+			         options = ('<option></option>'+options_from_collection_for_select(Tracker.find(Setting.plugin_redmine_facturaplus['bill_tracker']).issue_statuses, :id, :name, @settings['billed_statuses'].map(&:to_i))).html_safe
+			       else
+			         options = ('<option></option>').html_safe
+			       end
+			     %>
+				<%= select_tag 'settings[billed_statuses]', options, :multiple => true %>
+			</p>
+
+			<script>
+				$('#settings_bill_tracker').change(function(){
+					$('#settings_billed_statuses').load('/settings/show_tracker_statuses', {tracker: $('#settings_bill_tracker').val()});
+			 	});
+
+			</script>
+		</fieldset>
+
+		<fieldset>
+			<legend><%=l(:"facturaplus.label_endpoints")%></legend>
+			<p>
+				<label><%=l(:"facturaplus.label_get_clients")%></label>
+				<%= text_field_tag 'settings[get_clients_endpoint]', @settings['get_clients_endpoint'] %>
+			</p>
+			<p>
+				<label><%=l(:"facturaplus.label_set_order")%></label>
+				<%= text_field_tag 'settings[set_order_endpoint]', @settings['set_order_endpoint'] %>
+			</p>
+			<p>
+				<label><%=l(:"facturaplus.delete_order")%></label>
+				<%= text_field_tag 'settings[delete_order_endpoint]', @settings['delete_order_endpoint'] %>
+			</p>
+			<p>
+				<label><%=l(:"facturaplus.label_set_delivery_note")%></label>
+				<%= text_field_tag 'settings[set_delivery_note_endpoint]', @settings['set_delivery_note_endpoint'] %>
+			</p>
+			<p>
+				<label><%=l(:"facturaplus.delete_delivery_note")%></label>
+				<%= text_field_tag 'settings[delete_delivery_note_endpoint]', @settings['delete_delivery_note_endpoint'] %>
+			</p>
+		</fieldset>
+
+		<fielset>
+			<legend><%=l(:"facturaplus.label_emails")%></legend>
+			<p>
+				<label><%=l(:"facturaplus.label_email_list")%></label>
+				<%= text_field_tag 'settings[emails]', @settings['emails'] %>
+			</p>
+	</div>
+</fieldset>

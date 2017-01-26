@@ -1,0 +1,31 @@
+# American english strings go here
+en:
+  facturaplus:
+    plugin_name: Facturaplus
+    plugin_description: Emergya's Redmine integration with FacturaPlus
+
+    label_bill_tracker: Bill tracker
+    label_amount_field: Amount
+    label_vat_field: VAT
+    label_billing_date_field: Billing date
+    label_billers: FacturaPlus billers
+    label_biller_field: Biller
+    label_clients: Clients
+    label_client_field: Client
+    text_confirm_sync_client_field: If you synchronize this field, current options will be removed. Are you sure you want to continue?
+    label_sync_client_field: Synchronize
+    label_statuses: Statuses
+    label_billed_statuses: Billed statuses
+    label_endpoints: Endpoints
+    label_get_clients: Get clientes
+    label_set_order: Set order
+    delete_order: Delete order
+    label_set_delivery_note: Set delivery note
+    delete_delivery_note: Delete delivery note
+    label_emails: Emails
+    label_email_list: Email list
+    email_subject: Error while synchronize with FacturaPlus
+
+    text_sync_success: FacturaPlus synchronization was succesful
+    text_sync_fail: An error occurred while Redmine was synchronizing with FacturaPlus
+    text_biller_client_not_valid: Client and/or Biller selected are not valid. Please, be sure that Client is enabled for Biller in FacturaPlus
