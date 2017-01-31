@@ -22,8 +22,11 @@ module Facturaplus
         if self.facturaplus_relation.present?
           results += self.destroy_order
         end
-        if results.flatten.find{|r| r[:result].blank?}
-          errors[:base] << I18n.t('facturaplus.text_sync_fail')
+
+        if (res = results.flatten.find{|r| r[:result].blank?})
+          FacturaplusMailer.facturaplus_sync_error(self)
+          message = res[:body]['result'].present? ? res[:body]['result'] : I18n.t('facturaplus.text_sync_fail')
+          errors[:base] << message
           raise ActiveRecord::Rollback
         end
       end
@@ -65,9 +68,10 @@ module Facturaplus
           results += self.destroy_order
         end
 
-        if results.flatten.find{|r| r[:result].blank?}
+        if (res = results.flatten.find{|r| r[:result].blank?})
           FacturaplusMailer.facturaplus_sync_error(self)
-          errors[:base] << I18n.t('facturaplus.text_sync_fail')
+          message = res[:body]['result'].present? ? res[:body]['result'] : I18n.t('facturaplus.text_sync_fail')
+          errors[:base] << message
           raise ActiveRecord::Rollback
         end
       end
@@ -83,7 +87,7 @@ module Facturaplus
       def destroy_delivery_note
         result = []
         result << Facturaplus::Fp.delete_delivery_note(self) if self.facturaplus_relation.delivery_note_id.present?
-        self.facturaplus_relation.remove_delivery_note if self.facturaplus_relation.present?
+        self.facturaplus_relation.delivery_note_id = nil if self.facturaplus_relation.present? and !self.facturaplus_relation.destroyed?
         result
       end
 

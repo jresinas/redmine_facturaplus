@@ -67,7 +67,6 @@ module Facturaplus
 
 			if res[:result]
 				if issue.facturaplus_relation.present?
-					binding.pry
 					issue.facturaplus_relation[:delivery_note_id] = res[:body]['num']
 					issue.facturaplus_relation.save
 				else
@@ -79,7 +78,6 @@ module Facturaplus
 		end
 
 		def self.delete_order(issue)
-			binding.pry
 			params = {
 				:numPedido => issue.facturaplus_relation[:order_id],
 				# :empresaEmisora => get_biller_id(issue).to_s
@@ -193,13 +191,13 @@ module Facturaplus
 
 			    code = res.code
 			    result = (res.code.to_i >= 200 and res.code.to_i < 300) or (res.code.to_i == 304)
-			    body = result.present? ? JSON.parse(res.body.force_encoding('UTF-8')) : {}
+			    body = res.body.present? ? JSON.parse(res.body.force_encoding('UTF-8')) : {}
 			rescue
 				code = 503
 				result = false
 				body = {}
 			end
-		    
+
 		    {:code => code, :result => result, :body => body}
 		end
 	end
