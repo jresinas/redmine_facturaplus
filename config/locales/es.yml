@@ -8,6 +8,7 @@ es:
     label_amount_field: Facturación
     label_vat_field: IVA
     label_billing_date_field: Fecha de facturación
+    label_currency_field: Moneda
     label_billers: Emisores en FacturaPlus
     label_biller_field: Emisor
     label_clients: Clientes

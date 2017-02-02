@@ -8,6 +8,7 @@ en:
     label_amount_field: Amount
     label_vat_field: VAT
     label_billing_date_field: Billing date
+    label_currency_field: Currency
     label_billers: FacturaPlus billers
     label_biller_field: Biller
     label_clients: Clients

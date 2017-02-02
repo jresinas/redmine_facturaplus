@@ -45,6 +45,18 @@
 			<%= select_tag 'settings[billing_date_field]', options %>
 		</p>
 
+		<p>
+			<label><%=l(:"facturaplus.label_currency_field")%></label>
+			<%
+		       if Setting.plugin_redmine_facturaplus['bill_tracker'].present? 
+		         options = ('<option></option>'+options_from_collection_for_select(Tracker.find(Setting.plugin_redmine_facturaplus['bill_tracker']).custom_fields.where(field_format: 'enumeration'), :id, :name, @settings['currency_field'].to_i)).html_safe
+		       else
+		         options = ('<option></option>').html_safe
+		       end
+		     %>
+			<%= select_tag 'settings[currency_field]', options %>
+		</p>
+
 		<script>
 			$('#settings_bill_tracker').change(function(){
 				$('#settings_amount_field').load('/settings/show_tracker_custom_fields/float', {tracker: $('#settings_bill_tracker').val()});

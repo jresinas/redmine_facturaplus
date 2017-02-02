@@ -36,7 +36,9 @@ module Facturaplus
 				:fechaFacturacion => get_billing_date(issue),
 				:asunto => issue.subject,
 				:empresaEmisora => get_biller_id(issue).to_s,
-				:cliente => get_client_id(issue).to_s.rjust(6,'0')
+				:cliente => get_client_id(issue).to_s.rjust(6,'0'),
+				:codDivisa => get_currency_id(issue),
+				:valDivisaEuro => get_currency_exchange(issue)
 			}
 			res = facturaplus_request(Setting.plugin_redmine_facturaplus['set_order_endpoint'], params, 'post')
 
@@ -61,7 +63,9 @@ module Facturaplus
 				:fechaFacturacion => get_billing_date(issue),
 				:asunto => issue.subject,
 				:empresaEmisora => get_biller_id(issue).to_s,
-				:cliente => get_client_id(issue).to_s.rjust(6,'0')
+				:cliente => get_client_id(issue).to_s.rjust(6,'0'),
+				:codDivisa => get_currency_id(issue),
+				:valDivisaEuro => get_currency_exchange(issue)
 			}
 			res = facturaplus_request(Setting.plugin_redmine_facturaplus['set_delivery_note_endpoint'], params, 'post')
 
@@ -154,7 +158,7 @@ module Facturaplus
 
 		def self.get_vat(issue)
 			begin
-				issue.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['vat_field']).value
+				(get_currency_id(issue) == "1") ? issue.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['vat_field']).value : 0.0
 			rescue
 				nil
 			end
@@ -163,6 +167,22 @@ module Facturaplus
 		def self.get_billing_date(issue)
 			begin
 				issue.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['billing_date_field']).value
+			rescue
+				nil
+			end
+		end
+
+		def self.get_currency_id(issue)
+			begin
+				issue.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['currency_field']).value
+			rescue
+				nil
+			end
+		end
+
+		def self.get_currency_exchange(issue)
+			begin
+				Currency.find(get_currency_id(issue)).exchange.to_f
 			rescue
 				nil
 			end
