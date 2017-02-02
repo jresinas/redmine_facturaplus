@@ -16,6 +16,8 @@ es:
     label_sync_client_field: Sincronización
     label_statuses: Estados
     label_billed_statuses: Estados de facturación
+    label_default_content: Contenido por defecto
+    label_default_clients: Clientes por defecto
     label_endpoints: Endpoints
     label_get_clients: Obtener clientes
     label_set_order: Crear pedido cliente

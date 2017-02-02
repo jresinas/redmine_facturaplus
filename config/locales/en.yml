@@ -16,6 +16,8 @@ en:
     label_sync_client_field: Synchronize
     label_statuses: Statuses
     label_billed_statuses: Billed statuses
+    label_default_content: Default content
+    label_default_clients: Default clients
     label_endpoints: Endpoints
     label_get_clients: Get clientes
     label_set_order: Set order

@@ -121,8 +121,7 @@
 			 	
 			</script>
 		</fieldset>
-	</div>
-	<div class="splitcontentright">
+
 		<fieldset>
 			<legend><%=l(:"facturaplus.label_statuses")%></legend>
 			<p>
@@ -143,6 +142,15 @@
 			 	});
 
 			</script>
+		</fieldset>
+	</div>
+	<div class="splitcontentright">
+		<fieldset>
+			<legend><%=l(:"facturaplus.label_default_content")%></legend>
+			<p>
+				<label><%=l(:"facturaplus.label_default_clients")%></label>
+				<%= text_area_tag 'settings[default_clients]', @settings['default_clients'], :rows => 15 %>
+			</p>
 		</fieldset>
 
 		<fieldset>
