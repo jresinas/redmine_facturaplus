@@ -5,6 +5,7 @@ module Facturaplus
 			base.send(:include, InstanceMethods)
 
 			base.class_eval do
+				skip_filter :require_admin, :only => :sync_client_field
 				before_filter :authorize_global, :only => :sync_client_field
 			end
 		end

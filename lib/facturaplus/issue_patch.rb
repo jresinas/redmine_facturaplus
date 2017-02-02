@@ -10,6 +10,8 @@ module Facturaplus
         has_one :facturaplus_relation, :dependent => :destroy
         after_save :facturaplus_bill_save, :if => Proc.new{Facturaplus::Fp.requirements?}
         after_destroy :facturaplus_bill_destroy, :if => Proc.new{Facturaplus::Fp.requirements?}
+        # Patch to fix error when try to submit a NEW issue form after Rollback in facturaplus_bill_save method
+        before_create :patch_new_bill, :if => Proc.new{Facturaplus::Fp.requirements?}
       end
     end
 
@@ -31,6 +33,10 @@ module Facturaplus
         end
       end
         
+      def patch_new_bill
+        @new_bill = true
+      end
+
       def facturaplus_bill_save
         results = []
         biller_field = self.custom_values.find_by(custom_field: Setting.plugin_redmine_facturaplus['biller_field'])
@@ -46,6 +52,10 @@ module Facturaplus
           if client_id.blank?
             # El cliente (o emisor) elegidos no son validos (el cliente no está registrado en el emisor en FacturaPlus) -> ERROR
             errors[:base] << I18n.t('facturaplus.text_biller_client_not_valid')
+
+            # Patch to fix error when try to submit a NEW issue form after Rollback in facturaplus_bill_save method
+            self.destroy if @new_bill.present?
+
             raise ActiveRecord::Rollback
           end
 
@@ -72,6 +82,10 @@ module Facturaplus
           FacturaplusMailer.facturaplus_sync_error(self)
           message = res[:body]['result'].present? ? res[:body]['result'] : I18n.t('facturaplus.text_sync_fail')
           errors[:base] << message
+
+          # Patch to fix error when try to submit a NEW issue form after Rollback in facturaplus_bill_save method
+          self.destroy if @new_bill.present?
+
           raise ActiveRecord::Rollback
         end
       end
