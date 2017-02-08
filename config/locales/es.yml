@@ -33,3 +33,4 @@ es:
     text_sync_success: La sincronización con FacturaPlus se ha realizado correctamente
     text_sync_fail: Se ha producido un error durante la sincronización con FacturaPlus
     text_biller_client_not_valid: El Cliente y/o Empresa seleccionados no son válidos. Por favor, asegúrese que el Cliente indicado está habilitado para la Empresa seleccionada en FacturaPlus.
+    text_fields_missing: Hay campos requeridos que no están siendo mostrados
