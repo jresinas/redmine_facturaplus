@@ -137,10 +137,22 @@
 		<fieldset>
 			<legend><%=l(:"facturaplus.label_statuses")%></legend>
 			<p>
+				<label><%=l(:"facturaplus.label_billable_statuses")%></label>
+				<%
+			       if Setting.plugin_redmine_facturaplus['bill_tracker'].present? 
+			         options = ('<option></option>'+options_from_collection_for_select(Tracker.find(Setting.plugin_redmine_facturaplus['bill_tracker']).issue_statuses, :id, :name, @settings['billable_statuses'].present? ? @settings['billable_statuses'].map(&:to_i) : nil)).html_safe
+			       else
+			         options = ('<option></option>').html_safe
+			       end
+			     %>
+				<%= select_tag 'settings[billable_statuses]', options, :multiple => true %>
+			</p>
+
+			<p>
 				<label><%=l(:"facturaplus.label_billed_statuses")%></label>
 				<%
 			       if Setting.plugin_redmine_facturaplus['bill_tracker'].present? 
-			         options = ('<option></option>'+options_from_collection_for_select(Tracker.find(Setting.plugin_redmine_facturaplus['bill_tracker']).issue_statuses, :id, :name, @settings['billed_statuses'].map(&:to_i))).html_safe
+			         options = ('<option></option>'+options_from_collection_for_select(Tracker.find(Setting.plugin_redmine_facturaplus['bill_tracker']).issue_statuses, :id, :name, @settings['billed_statuses'].present? ? @settings['billed_statuses'].map(&:to_i) : nil)).html_safe
 			       else
 			         options = ('<option></option>').html_safe
 			       end
@@ -150,6 +162,7 @@
 
 			<script>
 				$('#settings_bill_tracker').change(function(){
+					$('#settings_billable_statuses').load('/settings/show_tracker_statuses', {tracker: $('#settings_bill_tracker').val()});
 					$('#settings_billed_statuses').load('/settings/show_tracker_statuses', {tracker: $('#settings_bill_tracker').val()});
 			 	});
 

@@ -44,7 +44,7 @@ module Facturaplus
         amount_field = self.custom_values.find_by(custom_field: Setting.plugin_redmine_facturaplus['amount_field'])
         currency_field = self.custom_values.find_by(custom_field: Setting.plugin_redmine_facturaplus['currency_field'])
 
-        if tracker_id.to_s == Setting.plugin_redmine_facturaplus['bill_tracker'] and biller_field.present? and client_field.present? and amount_field.present? and currency_field.present? and Setting.plugin_redmine_facturaplus['billers'].include?(biller_field.value)
+        if tracker_id.to_s == Setting.plugin_redmine_facturaplus['bill_tracker'] and !Setting.plugin_redmine_facturaplus['billed_statuses'].include?(status_id.to_s) and biller_field.present? and client_field.present? and amount_field.present? and currency_field.present? and Setting.plugin_redmine_facturaplus['billers'].include?(biller_field.value)
           # Es una factura emitada por una empresa con FacturaPlus
           biller_id = begin Facturaplus::BILLER_IDS[biller_field.value] rescue nil end
           client_id = begin FacturaplusClient.find_by(client_name: client_field.value, biller_id: biller_id).client_id rescue nil end
@@ -68,7 +68,7 @@ module Facturaplus
 
           # -> nos aseguramos que tenga un pedido
           results += self.create_order(biller_id, client_id, amount, currency)
-          if Setting.plugin_redmine_facturaplus['billed_statuses'].include?(status_id.to_s)
+          if Setting.plugin_redmine_facturaplus['billable_statuses'].include?(status_id.to_s)
             # Está en estado facturable -> nos aseguramos que tenga un albarán
             results += self.create_delivery_note(biller_id, client_id, amount, currency)
           elsif self.facturaplus_relation.present? and self.facturaplus_relation.delivery_note_id.present?

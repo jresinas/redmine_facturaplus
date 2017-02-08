@@ -10,6 +10,7 @@ module Facturaplus
 				Setting.plugin_redmine_facturaplus['biller_field'].present? and 
 				Setting.plugin_redmine_facturaplus['billers'].present? and
 				Setting.plugin_redmine_facturaplus['client_field'].present? and
+				Setting.plugin_redmine_facturaplus['billable_statuses'].present? and
 				Setting.plugin_redmine_facturaplus['billed_statuses'].present?
 		end
 

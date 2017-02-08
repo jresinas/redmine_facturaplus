@@ -16,6 +16,7 @@ en:
     text_confirm_sync_client_field: If you synchronize this field, current options will be removed. Are you sure you want to continue?
     label_sync_client_field: Synchronize
     label_statuses: Statuses
+    label_billable_statuses: Billable statuses
     label_billed_statuses: Billed statuses
     label_default_content: Default content
     label_default_clients: Default clients
