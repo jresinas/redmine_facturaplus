@@ -43,8 +43,8 @@ module Facturaplus
         client_field = self.custom_values.find_by(custom_field: Setting.plugin_redmine_facturaplus['client_field'])
         amount_field = self.custom_values.find_by(custom_field: Setting.plugin_redmine_facturaplus['amount_field'])
         currency_field = self.custom_values.find_by(custom_field: Setting.plugin_redmine_facturaplus['currency_field'])
-
-        if (!biller_field.present? or !client_field.present? or !amount_field.present? or !currency_field.present?) and Setting.plugin_redmine_facturaplus['billers'].include?(biller_field.value)
+        
+        if tracker_id.to_s == Setting.plugin_redmine_facturaplus['bill_tracker'] and (!biller_field.present? or !client_field.present? or !amount_field.present? or !currency_field.present?) and Setting.plugin_redmine_facturaplus['billers'].include?(biller_field.value)
           # Faltan campos requeridos en el ticket
           errors[:base] << I18n.t('facturaplus.text_fields_missing')
           # Patch to fix error when try to submit a NEW issue form after Rollback in facturaplus_bill_save method
