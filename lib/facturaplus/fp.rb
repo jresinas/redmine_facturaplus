@@ -35,13 +35,16 @@ module Facturaplus
 				:iva => get_vat(issue).to_f,
 				:idTicket => issue.id.to_s,
 				:fechaFacturacion => get_billing_date(issue),
-				:asunto => issue.subject,
+				:asunto => issue.subject.gsub('–','-'),
 				:empresaEmisora => get_biller_id(issue).to_s,
 				:cliente => get_client_id(issue).to_s.rjust(6,'0'),
 				:codDivisa => get_currency_id(issue),
 				:valDivisaEuro => get_currency_exchange(issue)
 			}
 			res = facturaplus_request(Setting.plugin_redmine_facturaplus['set_order_endpoint'], params, 'post')
+
+			# Parche para el comportamiento extraño al fallar el guardado del pedido
+			res[:result] = false if res[:body]['num'] <= 0
 
 			if res[:result]
 				if issue.facturaplus_relation.present?
@@ -62,13 +65,16 @@ module Facturaplus
 				:iva => get_vat(issue).to_f,
 				:idTicket => issue.id.to_s,
 				:fechaFacturacion => get_billing_date(issue),
-				:asunto => issue.subject,
+				:asunto => issue.subject.gsub('–','-'),
 				:empresaEmisora => get_biller_id(issue).to_s,
 				:cliente => get_client_id(issue).to_s.rjust(6,'0'),
 				:codDivisa => get_currency_id(issue),
 				:valDivisaEuro => get_currency_exchange(issue)
 			}
 			res = facturaplus_request(Setting.plugin_redmine_facturaplus['set_delivery_note_endpoint'], params, 'post')
+
+			# Parche para el comportamiento extraño al fallar el guardado del albarán
+			res[:result] = false if res[:body]['num'] <= 0
 
 			if res[:result]
 				if issue.facturaplus_relation.present?
