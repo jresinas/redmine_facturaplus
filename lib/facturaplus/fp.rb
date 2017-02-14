@@ -43,9 +43,6 @@ module Facturaplus
 			}
 			res = facturaplus_request(Setting.plugin_redmine_facturaplus['set_order_endpoint'], params, 'post')
 
-			# Parche para el comportamiento extraño al fallar el guardado del pedido
-			res[:result] = false if res[:body]['num'] <= 0
-
 			if res[:result]
 				if issue.facturaplus_relation.present?
 					issue.facturaplus_relation[:order_id] = res[:body]['num']
@@ -73,15 +70,12 @@ module Facturaplus
 			}
 			res = facturaplus_request(Setting.plugin_redmine_facturaplus['set_delivery_note_endpoint'], params, 'post')
 
-			# Parche para el comportamiento extraño al fallar el guardado del albarán
-			res[:result] = false if res[:body]['num'] <= 0
-
 			if res[:result]
 				if issue.facturaplus_relation.present?
 					issue.facturaplus_relation[:delivery_note_id] = res[:body]['num']
 					issue.facturaplus_relation.save
-				else
-					issue.facturaplus_relation = FacturaplusRelation.new(delivery_note_id: res[:body]['num'])
+				# else
+				# 	issue.facturaplus_relation = FacturaplusRelation.new(delivery_note_id: res[:body]['num'])
 				end
 			end
 
