@@ -57,6 +57,11 @@
 			<%= select_tag 'settings[currency_field]', options %>
 		</p>
 
+		<p>
+			<label><%=l(:"facturaplus.label_service_field")%></label>
+			<%= select_tag 'settings[service_field]', ('<option></option>'+options_from_collection_for_select(ProjectCustomField.where(field_format: 'list'), :id, :name, @settings['service_field'].to_i)).html_safe %>
+		</p>
+
 		<script>
 			$('#settings_bill_tracker').change(function(){
 				$('#settings_amount_field').load('/settings/show_tracker_custom_fields/float', {tracker: $('#settings_bill_tracker').val()});
@@ -68,6 +73,10 @@
 
 			$('#settings_bill_tracker').change(function(){
 				$('#settings_billing_date_field').load('/settings/show_tracker_custom_fields/date', {tracker: $('#settings_bill_tracker').val()});
+			});
+
+			$('#settings_bill_tracker').change(function(){
+				$('#settings_currency_field').load('/settings/show_tracker_custom_fields/enumeration', {tracker: $('#settings_bill_tracker').val()});
 			});
 		</script>
 		

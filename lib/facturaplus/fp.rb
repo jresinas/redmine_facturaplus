@@ -3,6 +3,7 @@ require "uri"
 
 module Facturaplus
 	BILLER_IDS = {"Emergya S.C.A." => 31, "Emergya Ingeniería S.L." => 32}
+	SERVICE_IDS = {"Desarrollo" => "01", "Consultorias" => "02", "Licencias" => "03", "Mantenimiento" => "04", "BPO" => "05", "Subcontratación" => "06", "Otros" =>"07", "Alquiler" => "99"}
 
 	class Fp
 		def self.requirements?
@@ -39,7 +40,8 @@ module Facturaplus
 				:empresaEmisora => get_biller_id(issue).to_s,
 				:cliente => get_client_id(issue).to_s.rjust(6,'0'),
 				:codDivisa => get_currency_id(issue),
-				:valDivisaEuro => get_currency_exchange(issue)
+				:valDivisaEuro => get_currency_exchange(issue),
+				:cref => get_service_id(issue)
 			}
 			res = facturaplus_request(Setting.plugin_redmine_facturaplus['set_order_endpoint'], params, 'post')
 
@@ -66,7 +68,8 @@ module Facturaplus
 				:empresaEmisora => get_biller_id(issue).to_s,
 				:cliente => get_client_id(issue).to_s.rjust(6,'0'),
 				:codDivisa => get_currency_id(issue),
-				:valDivisaEuro => get_currency_exchange(issue)
+				:valDivisaEuro => get_currency_exchange(issue),
+				:cref => get_service_id(issue)
 			}
 			res = facturaplus_request(Setting.plugin_redmine_facturaplus['set_delivery_note_endpoint'], params, 'post')
 
@@ -184,6 +187,22 @@ module Facturaplus
 		def self.get_currency_exchange(issue)
 			begin
 				Currency.find(get_currency_id(issue)).exchange.to_f
+			rescue
+				nil
+			end
+		end
+
+		def self.get_service_name(issue)
+			begin
+				issue.project.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['service_field']).value
+			rescue
+				nil
+			end
+		end
+
+		def self.get_service_id(issue)
+			begin
+				Facturaplus::SERVICE_IDS[get_service_name(issue)]
 			rescue
 				nil
 			end
