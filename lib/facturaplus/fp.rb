@@ -3,7 +3,7 @@ require "uri"
 
 module Facturaplus
 	BILLER_IDS = {"Emergya S.C.A." => 31, "Emergya Ingeniería S.L." => 32}
-	SERVICE_IDS = {"Desarrollo" => "01", "Consultorías" => "02", "Licencias" => "03", "Mantenimiento" => "04", "BPO" => "05", "Subcontratación" => "06", "Otros" =>"07", "Alquiler" => "99"}
+	SERVICE_IDS = {"Desarrollo" => "01", "Consultoría" => "02", "Licencias" => "03", "Mantenimiento" => "04", "BPO" => "05", "Subcontratación" => "06", "Otros" =>"07", "Alquiler" => "99"}
 
 	class Fp
 		def self.requirements?
