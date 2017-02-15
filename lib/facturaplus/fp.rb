@@ -41,7 +41,8 @@ module Facturaplus
 				:cliente => get_client_id(issue).to_s.rjust(6,'0'),
 				:codDivisa => get_currency_id(issue),
 				:valDivisaEuro => get_currency_exchange(issue),
-				:cref => get_service_id(issue)
+				:cref => get_service_id(issue),
+				:mercado => get_market_name(issue)
 			}
 			res = facturaplus_request(Setting.plugin_redmine_facturaplus['set_order_endpoint'], params, 'post')
 
@@ -69,7 +70,8 @@ module Facturaplus
 				:cliente => get_client_id(issue).to_s.rjust(6,'0'),
 				:codDivisa => get_currency_id(issue),
 				:valDivisaEuro => get_currency_exchange(issue),
-				:cref => get_service_id(issue)
+				:cref => get_service_id(issue),
+				:mercado => get_market_name(issue)
 			}
 			res = facturaplus_request(Setting.plugin_redmine_facturaplus['set_delivery_note_endpoint'], params, 'post')
 
@@ -203,6 +205,14 @@ module Facturaplus
 		def self.get_service_id(issue)
 			begin
 				Facturaplus::SERVICE_IDS[get_service_name(issue)]
+			rescue
+				nil
+			end
+		end
+
+		def self.get_market_name(issue)
+			begin
+				issue.project.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['market_field']).value
 			rescue
 				nil
 			end

@@ -10,6 +10,7 @@ en:
     label_billing_date_field: Billing date
     label_currency_field: Currency
     label_service_field: Service
+    label_market_field: Market
     label_billers: FacturaPlus billers
     label_biller_field: Biller
     label_clients: Clients
