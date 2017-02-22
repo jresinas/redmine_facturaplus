@@ -27,7 +27,7 @@ module Facturaplus
 
         if (res = results.flatten.find{|r| r[:result].blank?})
           FacturaplusMailer.facturaplus_sync_error(self)
-          message = res[:body]['result'].present? ? res[:body]['result'] : I18n.t('facturaplus.text_sync_fail')
+          message = (res[:body].present? and res[:body]['result'].present?) ? res[:body]['result'] : I18n.t('facturaplus.text_sync_fail')
           errors[:base] << message
           raise ActiveRecord::Rollback
         end
@@ -52,12 +52,16 @@ module Facturaplus
           raise ActiveRecord::Rollback
         end
 
+        vat_field = self.custom_values.find_by(custom_field: Setting.plugin_redmine_facturaplus['vat_field'])
+
         if tracker_id.to_s == Setting.plugin_redmine_facturaplus['bill_tracker'] and !Setting.plugin_redmine_facturaplus['billed_statuses'].include?(status_id.to_s) and Setting.plugin_redmine_facturaplus['billers'].include?(biller_field.value)
           # Es una factura emitada por una empresa con FacturaPlus y está en estado NO facturado
           biller_id = begin Facturaplus::BILLER_IDS[biller_field.value] rescue nil end
           client_id = begin FacturaplusClient.find_by(client_name: client_field.value, biller_id: biller_id).client_id rescue nil end
           amount = begin amount_field.value.to_f rescue nil end
           currency = begin currency_field.value rescue nil end
+          vat = begin vat_field.value rescue nil end
+          currency_exchange = begin Currency.find(currency).exchange rescue nil end
 
           if client_id.blank?
             # El cliente (o emisor) elegidos no son validos (el cliente no está registrado en el emisor en FacturaPlus) -> ERROR
@@ -69,16 +73,16 @@ module Facturaplus
             raise ActiveRecord::Rollback
           end
 
-          if self.facturaplus_relation.present? and (biller_id != self.facturaplus_relation.biller_id or client_id != self.facturaplus_relation.client_id or amount != self.facturaplus_relation.amount or currency != self.facturaplus_relation.currency)
+          if self.facturaplus_relation.present? and (biller_id != self.facturaplus_relation.biller_id or client_id != self.facturaplus_relation.client_id or amount != self.facturaplus_relation.amount or currency != self.facturaplus_relation.currency or vat != self.facturaplus_relation.vat or currency_exchange != self.facturaplus_relation.currency_exchange)
             # Tiene elementos de FacturaPlus asociados pero los datos han cambiado -> borramos los elementos asociados
             results += self.destroy_order
           end
 
           # -> nos aseguramos que tenga un pedido
-          results += self.create_order(biller_id, client_id, amount, currency)
+          results += self.create_order(biller_id, client_id, amount, currency, vat, currency_exchange)
           if Setting.plugin_redmine_facturaplus['billable_statuses'].include?(status_id.to_s)
             # Está en estado facturable -> nos aseguramos que tenga un albarán
-            results += self.create_delivery_note(biller_id, client_id, amount, currency)
+            results += self.create_delivery_note(biller_id, client_id, amount, currency, vat, currency_exchange)
           elsif self.facturaplus_relation.present? and self.facturaplus_relation.delivery_note_id.present?
             # No está facturable pero tiene un albarán asociado en FacturaPlus -> borrar albarán asociado
             results += self.destroy_delivery_note
@@ -90,7 +94,7 @@ module Facturaplus
 
         if (res = results.flatten.find{|r| r[:result].blank?})
           FacturaplusMailer.facturaplus_sync_error(self)
-          message = res[:body]['result'].present? ? res[:body]['result'] : I18n.t('facturaplus.text_sync_fail')
+          message = (res[:body].present? and res[:body]['result'].present?) ? res[:body]['result'] : I18n.t('facturaplus.text_sync_fail')
           errors[:base] << message
 
           # Patch to fix error when try to submit a NEW issue form after Rollback in facturaplus_bill_save method
@@ -115,10 +119,10 @@ module Facturaplus
         result
       end
 
-      def create_order(biller_id, client_id, amount, currency)
+      def create_order(biller_id, client_id, amount, currency, vat, currency_exchange)
         result = []
         begin
-          self.facturaplus_relation = FacturaplusRelation.new({biller_id: biller_id, client_id: client_id, amount: amount, currency: currency}) if self.facturaplus_relation.blank?
+          self.facturaplus_relation = FacturaplusRelation.new({biller_id: biller_id, client_id: client_id, amount: amount, currency: currency, vat: vat, currency_exchange: currency_exchange}) if self.facturaplus_relation.blank?
           result << Facturaplus::Fp.set_order(self) if self.facturaplus_relation.order_id.blank?
           result
         rescue
@@ -126,9 +130,9 @@ module Facturaplus
         end
       end
 
-      def create_delivery_note(biller_id, client_id, amount, currency)
+      def create_delivery_note(biller_id, client_id, amount, currency, vat, currency_exchange)
         result = []
-        create_order(biller_id, client_id, amount, currency) if self.facturaplus_relation.blank?
+        create_order(biller_id, client_id, amount, currency, vat, currency_exchange) if self.facturaplus_relation.blank?
         result << Facturaplus::Fp.set_delivery_note(self) if self.facturaplus_relation.delivery_note_id.blank?
         result
       end
