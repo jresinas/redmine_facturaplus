@@ -5,9 +5,15 @@
 <% if Setting.plugin_redmine_facturaplus['bill_tracker'].present? and Setting.plugin_redmine_facturaplus['client_field'].present? and @issue.tracker_id.to_s == Setting.plugin_redmine_facturaplus['bill_tracker'] and User.current.allowed_to?(:clients_sync, @project) %>
 <script>
 $(document).ready(function(){
-	client = $("#issue_custom_field_values_<%=Setting.plugin_redmine_facturaplus['client_field']%>");
-	sync_link = " <a href='#' class='icon icon-reload' onclick=\'if (confirm(\"<%=l(:'facturaplus.text_confirm_sync_client_field')%>\")){ sync_client_field(client); }\'></a>";
-	$(client).prev().append(sync_link);
+	client_field = $("#issue_custom_field_values_<%=Setting.plugin_redmine_facturaplus['client_field']%>");
+	biller_field = $("#issue_custom_field_values_<%=Setting.plugin_redmine_facturaplus['biller_field']%>");
+	sync_link = " <a href='#' class='icon icon-reload' onclick=\'if (confirm(\"<%=l(:'facturaplus.text_confirm_sync_client_field')%>\")){ sync_client_field(biller_field, client_field); }\'></a>";
+	$(client_field).prev().append(sync_link);
+
+	$(biller_field).on('change', function(){
+		change_biller(biller_field, client_field);
+	});
+	change_biller(biller_field, client_field);
 });
 </script>
 

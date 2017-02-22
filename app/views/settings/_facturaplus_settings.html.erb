@@ -136,7 +136,7 @@
 			       end
 			     %>
 				<%= select_tag 'settings[client_field]', options %>
-				<%= link_to '', '#', :class => 'icon icon-reload', :onclick => "if (confirm('#{l(:'facturaplus.text_confirm_sync_client_field')}')){ sync_client_field($(#settings_client_field)); }", :title => l(:'facturaplus.label_sync_client_field') %>
+				<%= link_to '', '#', :class => 'icon icon-reload', :onclick => "if (confirm('#{l(:'facturaplus.text_confirm_sync_client_field')}')){ sync_client_field(null, null); }", :title => l(:'facturaplus.label_sync_client_field') %>
 			</p>
 
 			<script>

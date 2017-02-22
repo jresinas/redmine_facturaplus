@@ -2,10 +2,10 @@ require "net/http"
 require "uri"
 
 module Facturaplus
-	BILLER_IDS = {"Emergya S.C.A." => 31, "Emergya Ingeniería S.L." => 32}
-	SERVICE_IDS = {"Desarrollo" => "01", "Consultoría" => "02", "Licencias" => "03", "Mantenimiento" => "04", "BPO" => "05", "Subcontratación" => "06", "Otros" =>"07", "Alquiler" => "99"}
-
 	class Fp
+		BILLER_IDS = {"Emergya S.C.A." => 31, "Emergya Ingeniería S.L." => 32}
+		SERVICE_IDS = {"Desarrollo" => "01", "Consultoría" => "02", "Licencias" => "03", "Mantenimiento" => "04", "BPO" => "05", "Subcontratación" => "06", "Otros" =>"07", "Alquiler" => "99"}
+
 		def self.requirements?
 			Setting.plugin_redmine_facturaplus['bill_tracker'].present? and 
 				Setting.plugin_redmine_facturaplus['biller_field'].present? and 
@@ -140,7 +140,7 @@ module Facturaplus
 
 		def self.get_biller_id(issue)
 			begin
-				Facturaplus::BILLER_IDS[get_biller_name(issue)]
+				BILLER_IDS[get_biller_name(issue)]
 			rescue
 				nil
 			end
@@ -204,7 +204,7 @@ module Facturaplus
 
 		def self.get_service_id(issue)
 			begin
-				Facturaplus::SERVICE_IDS[get_service_name(issue)]
+				SERVICE_IDS[get_service_name(issue)]
 			rescue
 				nil
 			end
