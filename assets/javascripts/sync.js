@@ -5,7 +5,6 @@ function sync_client_field(biller_field, client_field){
 		url: '/sync_client_field',
 		data: {client_custom_field: client_custom_field, biller: biller},
 		success: function(result_json){
-			console.log("HOLA");
 			$('#content .flash').remove();
 			result = JSON.parse(result_json);
 			if (result['type'] == 'success'){
