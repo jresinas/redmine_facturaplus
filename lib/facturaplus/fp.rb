@@ -6,6 +6,7 @@ module Facturaplus
 		BILLER_IDS = {"Emergya S.C.A." => 31, "Emergya Ingeniería S.L." => 32}
 		SERVICE_IDS = {"Desarrollo" => "01", "Consultoría" => "02", "Licencias" => "03", "Mantenimiento" => "04", "BPO" => "05", "Subcontratación" => "06", "Otros" =>"07", "Alquiler" => "99", "No clasificado" => "08"}
 
+		def self.requirements?
 			Setting.plugin_redmine_facturaplus['bill_tracker'].present? and 
 				Setting.plugin_redmine_facturaplus['biller_field'].present? and 
 				Setting.plugin_redmine_facturaplus['billers'].present? and
