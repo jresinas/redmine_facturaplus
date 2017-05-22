@@ -54,7 +54,7 @@ module Facturaplus
 
         if tracker_id.to_s == Setting.plugin_redmine_facturaplus['bill_tracker'] and !Setting.plugin_redmine_facturaplus['billed_statuses'].include?(status_id.to_s) and Setting.plugin_redmine_facturaplus['billers'].include?(biller_field.value)
           # Es una factura emitada por una empresa con FacturaPlus y está en estado NO facturado
-          biller_id = begin Facturaplus::BILLER_IDS[biller_field.value] rescue nil end
+          biller_id = begin Facturaplus::Fp::BILLER_IDS[biller_field.value] rescue nil end
           client_id = begin FacturaplusClient.find_by(client_name: client_field.value, biller_id: biller_id).client_id rescue nil end
           amount = begin amount_field.value.to_f rescue nil end
           currency = begin currency_field.value rescue nil end

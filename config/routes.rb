@@ -3,3 +3,4 @@ match '/settings/show_list_options' => 'settings#show_list_options', :via => [:g
 match '/settings/show_tracker_statuses' => 'settings#show_tracker_statuses', :via => [:get, :post]
 
 match '/sync_client_field' => 'custom_fields#sync_client_field', :via => [:get, :post]
+match '/get_clients' => 'custom_fields#get_clients', :via => [:get, :post]
