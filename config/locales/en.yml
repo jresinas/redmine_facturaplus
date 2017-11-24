@@ -31,6 +31,7 @@ en:
     label_emails: Emails
     label_email_list: Email list
     email_subject: Error while synchronize with FacturaPlus
+    email_subject: Bill changes
 
     text_sync_success: FacturaPlus synchronization was succesful
     text_sync_fail: An error occurred while Redmine was synchronizing with FacturaPlus

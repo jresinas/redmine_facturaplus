@@ -26,7 +26,7 @@ module Facturaplus
         end
 
         if (res = results.flatten.find{|r| r[:result].blank?})
-          FacturaplusMailer.facturaplus_sync_error(self)
+          FacturaplusMailer.facturaplus_sync_error(self).deliver
           message = res[:body]['result'].present? ? res[:body]['result'] : I18n.t('facturaplus.text_sync_fail')
           errors[:base] << message
           raise ActiveRecord::Rollback
@@ -89,7 +89,7 @@ module Facturaplus
         end
 
         if (res = results.flatten.find{|r| r[:result].blank?})
-          FacturaplusMailer.facturaplus_sync_error(self)
+          FacturaplusMailer.facturaplus_sync_error(self).deliver
           message = res[:body]['result'].present? ? res[:body]['result'] : I18n.t('facturaplus.text_sync_fail')
           errors[:base] << message
 

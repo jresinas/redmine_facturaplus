@@ -1,0 +1,11 @@
+<% if @facturas.present? or @fechas.present? %>
+	Hoy se han producido los siguientes cambios en facturas:
+	<%@facturas.each do |factura|%>
+		<%=link_to(factura[:issue], url_for(:controller => 'issues', :action => 'show', :id => factura[:issue]))%>: ha modificado su importe de <%=factura[:old]%> a <%=factura[:new]%>
+	<%end%>
+	<%@fechas.each do |fecha|%>
+		<%=link_to(fecha[:issue], url_for(:controller => 'issues', :action => 'show', :id => fecha[:issue]))%>: ha modificado su fecha de facturación de <%=fecha[:old]%> a <%=fecha[:new]%>
+	<%end%>
+<% else %>
+	Hoy no se han producido cambios en las facturas.
+<% end %>

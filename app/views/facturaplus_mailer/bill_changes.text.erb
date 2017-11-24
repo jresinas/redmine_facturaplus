@@ -1,0 +1,11 @@
+<% if @facturas.present? or @fechas.present? %>
+	Hoy se han producido los siguientes cambios en facturas:
+	<%@facturas.each do |factura|%>
+		<%=factura[:issue]%>: ha modificado su importe de <%=factura[:old]%> a <%=factura[:new]%>
+	<%end%>
+	<%@fechas.each do |fecha|%>
+		<%=fecha[:issue]%>: ha modificado su fecha de facturación de <%=fecha[:old]%> a <%=fecha[:new]%>
+	<%end%>
+<% else %>
+	Hoy no se han producido cambios en las facturas.
+<% end %>
