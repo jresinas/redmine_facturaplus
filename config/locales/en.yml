@@ -11,6 +11,7 @@ en:
     label_currency_field: Currency
     label_service_field: Service
     label_market_field: Market
+    label_business_unit_field: Business unit
     label_billers: FacturaPlus billers
     label_biller_field: Biller
     label_clients: Clients

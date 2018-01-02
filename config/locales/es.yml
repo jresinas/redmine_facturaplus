@@ -11,6 +11,7 @@ es:
     label_currency_field: Moneda
     label_service_field: Servicio
     label_market_field: Mercado
+    label_business_unit_field: Unidad de negocio
     label_billers: Emisores en FacturaPlus
     label_biller_field: Emisor
     label_clients: Clientes

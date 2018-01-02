@@ -42,7 +42,8 @@ module Facturaplus
 				:codDivisa => get_currency_id(issue),
 				:valDivisaEuro => get_currency_exchange(issue),
 				:cref => get_service_id(issue),
-				:mercado => get_market_name(issue)
+				:areaGeografica => get_market_name(issue),
+				:unidadNegocio => get_business_unit_name(issue)
 			}
 			res = facturaplus_request(Setting.plugin_redmine_facturaplus['set_order_endpoint'], params, 'post')
 
@@ -71,7 +72,8 @@ module Facturaplus
 				:codDivisa => get_currency_id(issue),
 				:valDivisaEuro => get_currency_exchange(issue),
 				:cref => get_service_id(issue),
-				:mercado => get_market_name(issue)
+				:areaGeografica => get_market_name(issue),
+				:unidadNegocio => get_business_unit_name(issue)
 			}
 			res = facturaplus_request(Setting.plugin_redmine_facturaplus['set_delivery_note_endpoint'], params, 'post')
 
@@ -213,6 +215,14 @@ module Facturaplus
 		def self.get_market_name(issue)
 			begin
 				issue.project.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['market_field']).value
+			rescue
+				nil
+			end
+		end
+
+		def self.get_business_unit_name(issue)
+			begin
+				issue.project.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['business_unit_field']).value
 			rescue
 				nil
 			end
