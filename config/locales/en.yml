@@ -38,3 +38,4 @@ en:
     text_sync_fail: An error occurred while Redmine was synchronizing with FacturaPlus
     text_biller_client_not_valid: Client and/or Biller selected are not valid. Please, be sure that Client is enabled for Biller in FacturaPlus
     text_fields_missing: There are some required fields missing
+    text_status_billed: The bill is billed and can't be modified
