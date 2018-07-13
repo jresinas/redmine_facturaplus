@@ -4,7 +4,7 @@ require "uri"
 module Facturaplus
 	class Fp
 		BILLER_IDS = {"Emergya S.C.A." => 31, "Emergya Ingeniería S.L." => 32}
-		SERVICE_IDS = {"Desarrollo" => "01", "Consultoría" => "02", "Licencias" => "03", "Mantenimiento" => "04", "BPO" => "05", "Subcontratación" => "06", "Otros" =>"07", "Alquiler" => "99", "Soporte" => "08"}
+		SERVICE_IDS = {"Desarrollo" => "01", "Consultoría" => "02", "Licencias" => "03", "Mantenimiento" => "04", "BPO" => "05", "Subcontratación" => "06", "Otros" =>"07", "Soporte" => "08", "Hardware" => "09", "I+D" => "10", "Gestión de producción" => "11", "Onboarding" => "12", "Estructura" => "13", "No Clasificado" => "14", "Alquiler" => "99"}
 
 		def self.requirements?
 			Setting.plugin_redmine_facturaplus['bill_tracker'].present? and 
