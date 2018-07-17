@@ -83,6 +83,7 @@ module Facturaplus
             # No está facturable pero tiene un albarán asociado en FacturaPlus -> borrar albarán asociado
             results += self.destroy_delivery_note
           end
+=begin        
         elsif tracker_id.to_s == Setting.plugin_redmine_facturaplus['bill_tracker'] and Setting.plugin_redmine_facturaplus['billed_statuses'].include?(status_id.to_s)
           # El estado del ticket es un estado facturado, por lo que no se puede modificar -> ERROR
           errors[:base] << I18n.t('facturaplus.text_status_billed')
@@ -91,6 +92,7 @@ module Facturaplus
           self.destroy if @new_bill.present?
 
           raise ActiveRecord::Rollback
+=end
         elsif self.facturaplus_relation.present?
           # No es una factura emitada por una empresa con FacturaPlus, pero tiene elementos de FacturaPlus asociados -> borramos los elementos asociados si NO está en estado facturado o NO está emitido por una empresa con FacturaPlus       
           results += self.destroy_order if !Setting.plugin_redmine_facturaplus['billed_statuses'].include?(status_id.to_s) or !Setting.plugin_redmine_facturaplus['billers'].include?(biller_field.value)
