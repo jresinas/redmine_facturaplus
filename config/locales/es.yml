@@ -24,13 +24,16 @@ es:
     label_default_content: Contenido por defecto
     label_default_clients: Clientes por defecto
     label_endpoints: Endpoints
+    label_protocol: Protocolo
+    label_domain: Dominio
     label_get_clients: Obtener clientes
     label_set_order: Crear pedido cliente
     delete_order: Eliminar pedido de cliente
     label_set_delivery_note: Crear albarán de cliente
     delete_delivery_note: Eliminar albarán de cliente
-    label_emails: Emails
+    label_others: Otros
     label_email_list: Lista de emails
+    label_devel_mode: Modo de desarrollo
     email_subject: Error durante la sincronización con FacturaPlus
     email_subject: Cambios en facturas
 

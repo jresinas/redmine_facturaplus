@@ -24,13 +24,16 @@ en:
     label_default_content: Default content
     label_default_clients: Default clients
     label_endpoints: Endpoints
-    label_get_clients: Get clientes
+    label_protocol: Protocol
+    label_domain: Domain
+    label_get_clients: Get clients
     label_set_order: Set order
     delete_order: Delete order
     label_set_delivery_note: Set delivery note
     delete_delivery_note: Delete delivery note
-    label_emails: Emails
+    label_others: Others
     label_email_list: Email list
+    label_devel_mode: Development mode
     email_subject: Error while synchronize with FacturaPlus
     email_subject: Bill changes
 

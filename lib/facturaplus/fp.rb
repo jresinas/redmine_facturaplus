@@ -243,7 +243,11 @@ module Facturaplus
 
 		def self.facturaplus_request(url, parameters, method)
 			begin
-				if url.present?
+				if Setting.plugin_redmine_facturaplus['devel_mode'].present?
+					code = 200
+					result = true
+					body = {}
+				elsif url.present?
 				    uri = URI.parse(url)
 
 				    case method

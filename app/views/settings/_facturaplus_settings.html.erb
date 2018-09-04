@@ -229,11 +229,16 @@
 			</p>
 		</fieldset>
 
-		<fielset>
-			<legend><%=l(:"facturaplus.label_emails")%></legend>
+		<fieldset>
+			<legend><%=l(:"facturaplus.label_others")%></legend>
 			<p>
 				<label><%=l(:"facturaplus.label_email_list")%></label>
 				<%= text_field_tag 'settings[emails]', @settings['emails'] %>
 			</p>
+		</fieldset>
+		<p>
+			<label><%=l(:"facturaplus.label_devel_mode")%></label>
+			<%= check_box_tag 'settings[devel_mode]', 1, @settings['devel_mode'] %>
+		</p>
 	</div>
 </fieldset>
