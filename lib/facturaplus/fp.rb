@@ -5,6 +5,8 @@ module Facturaplus
 	class Fp
 		BILLER_IDS = {"Emergya S.C.A." => 31, "Emergya Ingeniería S.L." => 32}
 		SERVICE_IDS = {"Desarrollo" => "01", "Consultoría" => "02", "Licencias" => "03", "Mantenimiento" => "04", "BPO" => "05", "Subcontratación" => "06", "Otros" =>"07", "Soporte" => "08", "Hardware" => "09", "I+D" => "10", "Gestión de producción" => "11", "Onboarding" => "12", "Estructura" => "13", "No Clasificado" => "14", "Alquiler" => "99"}
+		USER = 'integraciones'
+		PSSW = 'Gaewoofeiva0gi0t'
 
 		def self.requirements?
 			Setting.plugin_redmine_facturaplus['bill_tracker'].present? and 
@@ -16,7 +18,7 @@ module Facturaplus
 		end
 
 		def self.get_clients(field)
-			res = facturaplus_request(Setting.plugin_redmine_facturaplus['get_clients_endpoint'], {}, 'get')
+			res = facturaplus_request(get_endpoint('get_clients_endpoint'), {}, 'get')
 
 			if res[:result]
 				FacturaplusClient.transaction do
@@ -45,7 +47,7 @@ module Facturaplus
 				:areaGeografica => get_market_name(issue),
 				:unidadNegocio => get_business_unit_name(issue)
 			}
-			res = facturaplus_request(Setting.plugin_redmine_facturaplus['set_order_endpoint'], params, 'post')
+			res = facturaplus_request(get_endpoint('set_order_endpoint'), params, 'post')
 
 			if res[:result]
 				if issue.facturaplus_relation.present?
@@ -75,7 +77,7 @@ module Facturaplus
 				:areaGeografica => get_market_name(issue),
 				:unidadNegocio => get_business_unit_name(issue)
 			}
-			res = facturaplus_request(Setting.plugin_redmine_facturaplus['set_delivery_note_endpoint'], params, 'post')
+			res = facturaplus_request(get_endpoint('set_delivery_note_endpoint'), params, 'post')
 
 			if res[:result]
 				if issue.facturaplus_relation.present?
@@ -95,7 +97,7 @@ module Facturaplus
 				# :empresaEmisora => get_biller_id(issue).to_s
 				:empresaEmisora => issue.facturaplus_relation[:biller_id].to_s
 			}
-			res = facturaplus_request(Setting.plugin_redmine_facturaplus['delete_order_endpoint'], params, 'delete')
+			res = facturaplus_request(get_endpoint('delete_order_endpoint'), params, 'delete')
 
 			if res[:result]
 				# issue.facturaplus_relation = nil if issue.facturaplus_relation.present?
@@ -111,7 +113,7 @@ module Facturaplus
 				:empresaEmisora => issue.facturaplus_relation[:biller_id].to_s,
 				:numPedido => issue.facturaplus_relation[:order_id]
 			}
-			res = facturaplus_request(Setting.plugin_redmine_facturaplus['delete_delivery_note_endpoint'], params, 'delete')
+			res = facturaplus_request(get_endpoint('delete_delivery_note_endpoint'), params, 'delete')
 
 			if res[:result]
 				if issue.facturaplus_relation.present?
@@ -228,30 +230,49 @@ module Facturaplus
 			end
 		end
 
+		def self.get_endpoint(action)
+			if Setting.plugin_redmine_facturaplus[action].present? and Setting.plugin_redmine_facturaplus['protocol'].present? and Setting.plugin_redmine_facturaplus['domain'].present?
+				protocol = Setting.plugin_redmine_facturaplus['protocol']
+				domain = Setting.plugin_redmine_facturaplus['domain'].gsub(/\/$/, '')
+				path = Setting.plugin_redmine_facturaplus[action].gsub(/^\//, '')
+				return protocol+"://"+domain+'/'+path
+			else
+				return nil
+			end
+		end
+
 		def self.facturaplus_request(url, parameters, method)
 			begin
-			    uri = URI.parse(url)
+				if url.present?
+				    uri = URI.parse(url)
 
-			    case method
-			       when 'get'
-			       	req = Net::HTTP::Get.new(url+"?"+parameters.to_query)
-			       when 'post'
-			       	req = Net::HTTP::Post.new(url)
-			       	req.set_form_data(parameters)
-			       when 'put'
-			       	req = Net::HTTP::Put.new(url)
-			       	req.set_form_data(parameters)
-			       when 'delete'
-			       	req = Net::HTTP::Delete.new(url+"?"+parameters.to_query)
-			    end
+				    case method
+				       when 'get'
+				       	req = Net::HTTP::Get.new(url+"?"+parameters.to_query)
+				       when 'post'
+				       	req = Net::HTTP::Post.new(url)
+				       	req.set_form_data(parameters)
+				       when 'put'
+				       	req = Net::HTTP::Put.new(url)
+				       	req.set_form_data(parameters)
+				       when 'delete'
+				       	req = Net::HTTP::Delete.new(url+"?"+parameters.to_query)
+				    end
 
-			    res = Net::HTTP.start(uri.hostname, uri.port) do |http|
-			      http.request(req)
-			    end
+				    req.basic_auth USER, PSSW
 
-			    code = res.code
-			    result = (res.code.to_i >= 200 and res.code.to_i < 300) or (res.code.to_i == 304)
-			    body = res.body.present? ? JSON.parse(res.body.force_encoding('UTF-8')) : {}
+				    res = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => uri.scheme == 'https', :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
+				      	http.request(req)
+				    end
+
+				    code = res.code
+				    result = (res.code.to_i >= 200 and res.code.to_i < 300) or (res.code.to_i == 304)
+				    body = res.body.present? ? JSON.parse(res.body.force_encoding('UTF-8')) : {}
+				else
+					code = 404
+					result = false
+					body = {}
+				end
 			rescue
 				code = 503
 				result = false

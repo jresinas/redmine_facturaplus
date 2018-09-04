@@ -200,6 +200,14 @@
 		<fieldset>
 			<legend><%=l(:"facturaplus.label_endpoints")%></legend>
 			<p>
+				<label><%=l(:"facturaplus.label_protocol")%></label>
+				<%= select_tag 'settings[protocol]', options_for_select(['http', 'https'], @settings['protocol']) %>
+			</p>
+			<p>
+				<label><%=l(:"facturaplus.label_domain")%></label>
+				<%= text_field_tag 'settings[domain]', @settings['domain'] %>
+			</p>
+			<p>
 				<label><%=l(:"facturaplus.label_get_clients")%></label>
 				<%= text_field_tag 'settings[get_clients_endpoint]', @settings['get_clients_endpoint'] %>
 			</p>
