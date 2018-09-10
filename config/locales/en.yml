@@ -26,6 +26,8 @@ en:
     label_endpoints: Endpoints
     label_protocol: Protocol
     label_domain: Domain
+    label_user: User
+    label_pssw: Password
     label_get_clients: Get clients
     label_set_order: Set order
     delete_order: Delete order
@@ -41,4 +43,4 @@ en:
     text_sync_fail: An error occurred while Redmine was synchronizing with FacturaPlus
     text_biller_client_not_valid: Client and/or Biller selected are not valid. Please, be sure that Client is enabled for Biller in FacturaPlus
     text_fields_missing: There are some required fields missing
-    text_status_billed: The bill is billed and can't be modified
+    text_not_a_bill: 'Please, to change to the selected state, change the "Bill Type" to "Bill"'

@@ -105,7 +105,7 @@
 			</p>
 
 			<p>
-				<label><%=l(:"facturaplus.label_biller_field")%></label>
+				<label><%=l(:"facturaplus.label_biller")%></label>
 				<%
 			       if Setting.plugin_redmine_facturaplus['biller_field'].present? 
 			         options = ('<option></option>'+options_for_select(CustomField.find(Setting.plugin_redmine_facturaplus['biller_field']).possible_values, @settings['billers'])).html_safe
@@ -125,6 +125,45 @@
 
 				$('#settings_biller_field').change(function(){
 					$('#settings_billers').load('/settings/show_list_options', {custom_field: $('#settings_biller_field').val()});
+				});
+			</script>
+		</fieldset>
+
+		<fieldset>
+			<legend><%=l(:"facturaplus.label_bill_types")%></legend>
+			<p>
+				<label><%=l(:"facturaplus.label_bill_type_field")%></label>
+				<%
+			       if Setting.plugin_redmine_facturaplus['bill_tracker'].present? 
+			         options = ('<option></option>'+options_from_collection_for_select(Tracker.find(Setting.plugin_redmine_facturaplus['bill_tracker']).custom_fields.where(field_format: 'list'), :id, :name, @settings['bill_type_field'].to_i)).html_safe
+			       else
+			         options = ('<option></option>').html_safe
+			       end
+			     %>
+				<%= select_tag 'settings[bill_type_field]', options %>
+			</p>
+
+			<p>
+				<label><%=l(:"facturaplus.label_bill_type")%></label>
+				<%
+			       if Setting.plugin_redmine_facturaplus['bill_type_field'].present? 
+			         options = ('<option></option>'+options_for_select(CustomField.find(Setting.plugin_redmine_facturaplus['bill_type_field']).possible_values, @settings['bill_types'])).html_safe
+			       else
+			         options = ('<option></option>').html_safe
+			       end
+			     %>
+				<%= select_tag 'settings[bill_types]', options, :multiple => true %>
+			</p>
+
+			<script>
+				$('#settings_bill_tracker').change(function(){
+					$('#settings_bill_type_field').load('/settings/show_tracker_custom_fields/list', {tracker: $('#settings_bill_tracker').val()}, function(){
+						$('#settings_bill_type_field').trigger('change');
+					});
+				});
+
+				$('#settings_bill_type_field').change(function(){
+					$('#settings_bill_types').load('/settings/show_list_options', {custom_field: $('#settings_bill_type_field').val()});
 				});
 			</script>
 		</fieldset>
@@ -206,6 +245,14 @@
 			<p>
 				<label><%=l(:"facturaplus.label_domain")%></label>
 				<%= text_field_tag 'settings[domain]', @settings['domain'] %>
+			</p>
+			<p>
+				<label><%=l(:"facturaplus.label_user")%></label>
+				<%= text_field_tag 'settings[user]', @settings['user'] %>
+			</p>
+			<p>
+				<label><%=l(:"facturaplus.label_pssw")%></label>
+				<%= text_field_tag 'settings[pssw]', @settings['pssw'] %>
 			</p>
 			<p>
 				<label><%=l(:"facturaplus.label_get_clients")%></label>
