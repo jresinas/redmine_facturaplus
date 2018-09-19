@@ -105,7 +105,7 @@
 			</p>
 
 			<p>
-				<label><%=l(:"facturaplus.label_biller")%></label>
+				<label><%=l(:"facturaplus.label_billers")%></label>
 				<%
 			       if Setting.plugin_redmine_facturaplus['biller_field'].present? 
 			         options = ('<option></option>'+options_for_select(CustomField.find(Setting.plugin_redmine_facturaplus['biller_field']).possible_values, @settings['billers'])).html_safe
@@ -144,7 +144,7 @@
 			</p>
 
 			<p>
-				<label><%=l(:"facturaplus.label_bill_type")%></label>
+				<label><%=l(:"facturaplus.label_bill_types")%></label>
 				<%
 			       if Setting.plugin_redmine_facturaplus['bill_type_field'].present? 
 			         options = ('<option></option>'+options_for_select(CustomField.find(Setting.plugin_redmine_facturaplus['bill_type_field']).possible_values, @settings['bill_types'])).html_safe

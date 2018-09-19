@@ -14,6 +14,8 @@ es:
     label_business_unit_field: Unidad de negocio
     label_billers: Emisores en FacturaPlus
     label_biller_field: Emisor
+    label_bill_type_field: Tipo de factura
+    label_bill_types: Tipos de facturas facturables
     label_clients: Clientes
     label_client_field: Cliente
     text_confirm_sync_client_field: Si continua con la sincronización se perderán las opciones registradas actualmente en el campo. ¿Está seguro que desea continuar?

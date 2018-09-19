@@ -14,6 +14,8 @@ en:
     label_business_unit_field: Business unit
     label_billers: FacturaPlus billers
     label_biller_field: Biller
+    label_bill_type_field: Bill type
+    label_bill_types: Billable bill types
     label_clients: Clients
     label_client_field: Client
     text_confirm_sync_client_field: If you synchronize this field, current options will be removed. Are you sure you want to continue?
