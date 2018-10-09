@@ -68,7 +68,7 @@ module Facturaplus
             biller_id = begin Facturaplus::Fp::BILLER_IDS[biller_field.value] rescue nil end
             client_id = begin FacturaplusClient.find_by(client_name: client_field.value, biller_id: biller_id).client_id rescue nil end
             amount = begin amount_field.value.to_f rescue nil end
-            currency = begin currency_field.value rescue nil end
+            currency = begin currency_field.value.to_i rescue nil end
 
             if client_id.blank?
               # El cliente (o emisor) elegidos no son validos (el cliente no está registrado en el emisor en FacturaPlus) -> ERROR
