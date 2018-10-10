@@ -38,6 +38,7 @@ es:
     label_others: Otros
     label_email_list: Lista de emails
     label_devel_mode: Modo de desarrollo
+    label_auto_delete_order: Borrar pedidos automáticamente
     email_subject: Error durante la sincronización con FacturaPlus
     email_subject: Cambios en facturas
 

@@ -38,6 +38,7 @@ en:
     label_others: Others
     label_email_list: Email list
     label_devel_mode: Development mode
+    label_auto_delete_order: Auto delete orders
     email_subject: Error while synchronize with FacturaPlus
     email_subject: Bill changes
 

@@ -287,5 +287,9 @@
 			<label><%=l(:"facturaplus.label_devel_mode")%></label>
 			<%= check_box_tag 'settings[devel_mode]', 1, @settings['devel_mode'] %>
 		</p>
+		<p>
+			<label><%=l(:"facturaplus.label_auto_delete_order")%></label>
+			<%= check_box_tag 'settings[auto_delete_order]', 1, @settings['auto_delete_order'] %>
+		</p>
 	</div>
 </fieldset>

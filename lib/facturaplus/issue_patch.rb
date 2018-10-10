@@ -80,7 +80,7 @@ module Facturaplus
               raise ActiveRecord::Rollback
             end
 
-            if self.facturaplus_relation.present? and (biller_id != self.facturaplus_relation.biller_id or client_id != self.facturaplus_relation.client_id or amount != self.facturaplus_relation.amount or currency != self.facturaplus_relation.currency)
+            if (Setting.plugin_redmine_facturaplus['auto_delete_order'].present?) or (self.facturaplus_relation.present? and (biller_id != self.facturaplus_relation.biller_id or client_id != self.facturaplus_relation.client_id or amount != self.facturaplus_relation.amount or currency != self.facturaplus_relation.currency))
               # Tiene elementos de FacturaPlus asociados pero los datos han cambiado -> borramos los elementos asociados
               results += self.destroy_order
             end
