@@ -3,6 +3,7 @@ require "uri"
 
 module Facturaplus
 	class Fp
+		@@fplog ||= Logger.new("#{Rails.root}/log/fp.log")
 		BILLER_IDS = {"Emergya S.C.A." => 31, "Emergya Ingeniería S.L." => 32}
 		SERVICE_IDS = {"Desarrollo" => "01", "Consultoría" => "02", "Licencias" => "03", "Mantenimiento" => "04", "BPO" => "05", "Subcontratación" => "06", "Otros" =>"07", "Soporte" => "08", "Hardware" => "09", "I+D" => "10", "Gestión de producción" => "11", "Onboarding" => "12", "Estructura" => "13", "No Clasificado" => "14", "Alquiler" => "99"}
 
@@ -266,8 +267,10 @@ module Facturaplus
 					end
 
 				    res = Net::HTTP.start(uri.hostname, uri.port, :use_ssl => uri.scheme == 'https', :verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
+				      	@@fplog.info("Send #{method.upcase} to #{url} with #{parameters}")
 				      	http.request(req)
 				    end
+				    @@fplog.info("Receive #{res.code} with #{res.body}")
 
 				    code = res.code
 				    result = (res.code.to_i >= 200 and res.code.to_i < 300) or (res.code.to_i == 304)
