@@ -12,6 +12,7 @@ es:
     label_service_field: Servicio
     label_market_field: Mercado
     label_business_unit_field: Unidad de negocio
+    label_business_line_field: Línea de negocio
     label_billers: Emisores en FacturaPlus
     label_biller_field: Emisor
     label_bill_type_field: Tipo de factura

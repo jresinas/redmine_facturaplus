@@ -12,6 +12,7 @@ en:
     label_service_field: Service
     label_market_field: Market
     label_business_unit_field: Business unit
+    label_business_line_field: Business line
     label_billers: FacturaPlus billers
     label_biller_field: Biller
     label_bill_type_field: Bill type
