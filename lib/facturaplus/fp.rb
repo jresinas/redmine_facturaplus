@@ -43,7 +43,7 @@ module Facturaplus
 				:codDivisa => get_currency_id(issue),
 				:valDivisaEuro => get_currency_exchange(issue),
 				:cref => get_service_id(issue),
-				:areaGeografica => get_market_name(issue),
+				#:areaGeografica => get_market_name(issue),
 				:unidadNegocio => get_business_unit_name(issue),
 				:lineaNegocio => get_business_line_name(issue)
 			}
@@ -74,7 +74,7 @@ module Facturaplus
 				:codDivisa => get_currency_id(issue),
 				:valDivisaEuro => get_currency_exchange(issue),
 				:cref => get_service_id(issue),
-				:areaGeografica => get_market_name(issue),
+				#:areaGeografica => get_market_name(issue),
 				:unidadNegocio => get_business_unit_name(issue),
 				:lineaNegocio => get_business_line_name(issue)
 			}
@@ -124,6 +124,19 @@ module Facturaplus
 			end
 
 			res
+		end
+
+		def self.invoice_exists?(issue)
+			params = {
+				:numAlbaran => issue.facturaplus_relation[:delivery_note_id],
+				:empresaEmisora => issue.facturaplus_relation[:biller_id].to_s,
+				:numPedido => issue.facturaplus_relation[:order_id]
+			}
+			res = facturaplus_request(get_endpoint('has_existing_invoice'), params, 'get')
+
+			if res[:result] and Setting.plugin_redmine_facturaplus['billable_statuses'].include?(issue.status.id.to_s)
+				issue.update_attribute('status', IssueStatus.find(Setting.plugin_redmine_facturaplus['billed_statuses']).first) #Facturado
+			end
 		end
 
 		private
