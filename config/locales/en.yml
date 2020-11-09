@@ -1,5 +1,7 @@
 # American english strings go here
 en:
+  field_service: Service
+  field_article: Article
   facturaplus:
     plugin_name: Facturaplus
     plugin_description: Emergya's Redmine integration with FacturaPlus
@@ -42,6 +44,16 @@ en:
     label_auto_delete_order: Auto delete orders
     email_subject: Error while synchronize with FacturaPlus
     email_subject: Bill changes
+
+    label_articles_settings: Manage relations between services and Sage articles
+    label_article_field: Article
+    label_service_name_field: Service name
+    label_new_sage_article: New Sage article
+    label_edit_sage_article: Edit Sage article
+    sage_articles:
+        text_create_notice: Sage article was successfully created.
+        text_edit_notice: Sage article was successfully updated.
+        text_delete_notice_success: Sage article was successfully destroyed.
 
     text_sync_success: FacturaPlus synchronization was succesful
     text_sync_fail: An error occurred while Redmine was synchronizing with FacturaPlus

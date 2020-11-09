@@ -21,4 +21,8 @@ Redmine::Plugin.register :redmine_facturaplus do
   permission :clients_sync, { :custom_fields => [:sync_client_field] }
 
   settings :default => {}, :partial => 'settings/facturaplus_settings'
+
+  menu :admin_menu, :'facturaplus.label_articles_settings', { :controller => 'sage_articles', :action => 'index' },
+       :html => { :class => 'issue_statuses' },
+       :caption => :'facturaplus.label_articles_settings'
 end

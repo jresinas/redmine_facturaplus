@@ -59,7 +59,7 @@
 
 		<p>
 			<label><%=l(:"facturaplus.label_service_field")%></label>
-			<%= select_tag 'settings[service_field]', ('<option></option>'+options_from_collection_for_select(ProjectCustomField.where(field_format: 'list'), :id, :name, @settings['service_field'].to_i)).html_safe %>
+			<%= select_tag 'settings[service_field]', ('<option></option>'+options_from_collection_for_select(ProjectCustomField.where(field_format: 'enumeration'), :id, :name, @settings['service_field'].to_i)).html_safe %>
 		</p>
 
 		<p>
@@ -74,7 +74,7 @@
 
 		<p>
 			<label><%=l(:"facturaplus.label_business_line_field")%></label>
-			<%= select_tag 'settings[business_line_field]', ('<option></option>'+options_from_collection_for_select(ProjectCustomField.where(field_format: 'list'), :id, :name, @settings['business_line_field'].to_i)).html_safe %>
+			<%= select_tag 'settings[business_line_field]', ('<option></option>'+options_from_collection_for_select(ProjectCustomField.where(field_format: 'enumeration'), :id, :name, @settings['business_line_field'].to_i)).html_safe %>
 		</p>
 
 		<script>
