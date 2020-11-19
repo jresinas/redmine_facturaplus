@@ -1,10 +1,9 @@
 # Spanish strings go here
 es:
-  field_service: Servicio
-  field_article: Artículo
+  field_target_code: Código
   facturaplus:
-    plugin_name: Facturaplus
-    plugin_description: Integración del Redmine de Emergya con FacturaPlus
+    plugin_name: Facturaplus/Sage
+    plugin_description: Integración del Redmine de Emergya con FacturaPlus/Sage 200c
 
     label_bill_tracker: Tracker de factura
     label_amount_field: Facturación
@@ -15,7 +14,7 @@ es:
     label_market_field: Mercado
     label_business_unit_field: Unidad de negocio
     label_business_line_field: Línea de negocio
-    label_billers: Emisores en FacturaPlus
+    label_billers: Emisores en FacturaPlus/Sage 200c
     label_biller_field: Emisor
     label_bill_type_field: Tipo de factura
     label_bill_types: Tipos de facturas facturables
@@ -45,15 +44,20 @@ es:
     email_subject: Error durante la sincronización con FacturaPlus
     email_subject: Cambios en facturas
 
-    label_articles_settings: Gestionar relaciones entre servicios y artículos Sage
+    label_sage_associations_settings: Gestionar relaciones entre valores de Redmine y de Sage
     label_article_field: Artículo
+    label_articles: Artículos
     label_service_name_field: Nombre del servicio
-    label_new_sage_article: Nuevo artículo Sage
-    label_edit_sage_article: Modificar artículo Sage
-    sage_articles:
-        text_create_notice: El artículo Sage ha sido creado exitosamente.
-        text_edit_notice: El artículo Sage se ha editado con éxito.
-        text_delete_notice_success: El artículo Sage se ha borrado con éxito.
+    label_biller_name_field: Nombre del emisor
+    label_biller_code_field: Código
+    label_new_sage_article_association: Nuevo artículo Sage
+    label_edit_sage_article_association: Modificar artículo Sage
+    label_new_sage_biller_association: Nuevo emisor Sage
+    label_edit_sage_biller_association: Modificar emisor Sage
+    sage_associations:
+        text_create_notice: La asociación con Sage ha sido creado exitosamente.
+        text_update_notice: La asociación con se ha editado con éxito.
+        text_delete_notice_success: La asociación con Sage se ha borrado con éxito.
 
     text_sync_success: La sincronización con FacturaPlus se ha realizado correctamente
     text_sync_fail: Se ha producido un error durante la sincronización con FacturaPlus

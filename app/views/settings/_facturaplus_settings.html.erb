@@ -69,7 +69,7 @@
 
 		<p>
 			<label><%=l(:"facturaplus.label_business_unit_field")%></label>
-			<%= select_tag 'settings[business_unit_field]', ('<option></option>'+options_from_collection_for_select(ProjectCustomField.where(field_format: 'list'), :id, :name, @settings['business_unit_field'].to_i)).html_safe %>
+			<%= select_tag 'settings[business_unit_field]', ('<option></option>'+options_from_collection_for_select(ProjectCustomField.where(field_format: 'enumeration'), :id, :name, @settings['business_unit_field'].to_i)).html_safe %>
 		</p>
 
 		<p>
@@ -101,7 +101,7 @@
 				<label><%=l(:"facturaplus.label_biller_field")%></label>
 				<%
 			       if Setting.plugin_redmine_facturaplus['bill_tracker'].present? 
-			         options = ('<option></option>'+options_from_collection_for_select(Tracker.find(Setting.plugin_redmine_facturaplus['bill_tracker']).custom_fields.where(field_format: 'list'), :id, :name, @settings['biller_field'].to_i)).html_safe
+			         options = ('<option></option>'+options_from_collection_for_select(Tracker.find(Setting.plugin_redmine_facturaplus['bill_tracker']).custom_fields.where(field_format: 'enumeration'), :id, :name, @settings['biller_field'].to_i)).html_safe
 			       else
 			         options = ('<option></option>').html_safe
 			       end
@@ -109,17 +109,20 @@
 				<%= select_tag 'settings[biller_field]', options %>
 			</p>
 
+			<%#
 			<p>
-				<label><%=l(:"facturaplus.label_billers")%></label>
-				<%
+				<label>%><%#=l(:"facturaplus.label_billers")%><%#</label>%>
+				<%#
 			       if Setting.plugin_redmine_facturaplus['biller_field'].present? 
 			         options = ('<option></option>'+options_for_select(CustomField.find(Setting.plugin_redmine_facturaplus['biller_field']).possible_values, @settings['billers'])).html_safe
 			       else
 			         options = ('<option></option>').html_safe
 			       end
 			     %>
-				<%= select_tag 'settings[billers]', options, :multiple => true %>
+				<%#= select_tag 'settings[billers]', options, :multiple => true %>
+			<%#
 			</p>
+			%>
 
 			<script>
 				$('#settings_bill_tracker').change(function(){
@@ -128,9 +131,11 @@
 					});
 				});
 
+			<%#
 				$('#settings_biller_field').change(function(){
 					$('#settings_billers').load('/settings/show_list_options', {custom_field: $('#settings_biller_field').val()});
 				});
+			%>
 			</script>
 		</fieldset>
 

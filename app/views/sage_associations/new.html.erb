@@ -1,0 +1,15 @@
+<%= title l(:"facturaplus.label_new_sage_#{@type.underscore}_association") %>
+
+<%= labelled_form_for @sage_association, :url => sage_associations_path do |f| %>
+  <%= error_messages_for 'sage_associations' %>
+  <div class="box tabular">
+    <div id="all_attributes">
+        <%= render :partial => 'sage_associations/form', :locals => {:f => f} %>
+    </div>
+
+  </div>
+
+  <%= submit_tag l(:button_create) %>
+  <%= submit_tag l(:button_create_and_continue), :name => 'continue' %>
+<% end %>
+<%= link_to l(:button_back), sage_associations_path %>

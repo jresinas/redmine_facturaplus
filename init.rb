@@ -22,7 +22,7 @@ Redmine::Plugin.register :redmine_facturaplus do
 
   settings :default => {}, :partial => 'settings/facturaplus_settings'
 
-  menu :admin_menu, :'facturaplus.label_articles_settings', { :controller => 'sage_articles', :action => 'index' },
+  menu :admin_menu, :'facturaplus.label_sage_associations_settings', { :controller => 'sage_associations', :action => 'index' },
        :html => { :class => 'issue_statuses' },
-       :caption => :'facturaplus.label_articles_settings'
+       :caption => :'facturaplus.label_sage_associations_settings'
 end

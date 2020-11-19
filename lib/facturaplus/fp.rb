@@ -4,14 +4,14 @@ require "uri"
 module Facturaplus
 	class Fp
 		@@fplog ||= Logger.new("#{Rails.root}/log/fp.log")
-		BILLER_IDS = {"Emergya S.C.A." => 31, "Emergya Ingeniería S.L." => 32}
+		#BILLER_IDS = {"Emergya S.C.A." => 31, "Emergya Ingeniería S.L." => 32}
 		# SERVICE_IDS = {"Desarrollo" => "01", "Consultoría" => "02", "Licencias" => "03", "Mantenimiento" => "04", "BPO" => "05", "Subcontratación" => "06", "Otros" =>"07", "Soporte" => "08", "Hardware" => "09", "I+D" => "10", "Gestión de producción" => "11", "Estructura de Producción" => "12", "Estructura" => "13", "No Clasificado" => "14", "AWS" => "15", "GCP" => "16", "GMP" => "17", "GSuite" => "18", "Alquiler" => "99"}
 		BUSINESS_DEPARTMENT_NAME = "RED"
 
 		def self.requirements?
 			Setting.plugin_redmine_facturaplus['bill_tracker'].present? and 
 				Setting.plugin_redmine_facturaplus['biller_field'].present? and 
-				Setting.plugin_redmine_facturaplus['billers'].present? and
+				Setting.plugin_redmine_facturaplus['service_field'].present? and
 				Setting.plugin_redmine_facturaplus['client_field'].present? and
 				Setting.plugin_redmine_facturaplus['billable_statuses'].present? and
 				Setting.plugin_redmine_facturaplus['billed_statuses'].present?
@@ -145,7 +145,7 @@ module Facturaplus
 		private
 		def self.get_biller_name(issue)
 			begin
-				issue.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['biller_field']).value
+				Enumeration.find(issue.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['biller_field']).value).name
 			rescue
 				nil
 			end
@@ -161,7 +161,7 @@ module Facturaplus
 
 		def self.get_biller_id(issue)
 			begin
-				BILLER_IDS[get_biller_name(issue)]
+				SageAssociation.find_by(source_id: issue.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['biller_field']).value, data_type: 'Biller').target_code
 			rescue
 				nil
 			end
@@ -217,15 +217,16 @@ module Facturaplus
 
 		def self.get_service_name(issue)
 			begin
-				issue.project.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['service_field']).value
+				Enumeration.find(issue.project.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['service_field']).value).name
 			rescue
 				nil
 			end
 		end
 
 		def self.get_service_id(issue)
+			binding.pry
 			begin
-				SageArticle.find_by_service_id(get_service_name(issue)).article_id
+				SageAssociation.find_by(source_id: issue.project.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['service_field']).value, data_type: 'Article').target_code
 			rescue
 				nil
 			end
@@ -241,7 +242,7 @@ module Facturaplus
 
 		def self.get_business_unit_name(issue)
 			begin
-				issue.project.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['business_unit_field']).value
+				Enumeration.find(issue.project.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['business_unit_field']).value).name
 			rescue
 				nil
 			end

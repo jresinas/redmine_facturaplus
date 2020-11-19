@@ -45,7 +45,7 @@ module Facturaplus
         currency_field = self.custom_values.find_by(custom_field: Setting.plugin_redmine_facturaplus['currency_field'])
         bill_type_field = self.custom_values.find_by(custom_field: Setting.plugin_redmine_facturaplus['bill_type_field'])
         
-        if tracker_id.to_s == Setting.plugin_redmine_facturaplus['bill_tracker'] and (!biller_field.present? or !client_field.present? or !amount_field.present? or !currency_field.present? or !bill_type_field.present?) and Setting.plugin_redmine_facturaplus['billers'].include?(biller_field.value)
+        if tracker_id.to_s == Setting.plugin_redmine_facturaplus['bill_tracker'] and (!biller_field.present? or !client_field.present? or !amount_field.present? or !currency_field.present? or !bill_type_field.present?) and SageAssociation.find_by_source_id_and_data_type(biller_field.value, 'Biller').present?
           # Faltan campos requeridos en el ticket
           errors[:base] << I18n.t('facturaplus.text_fields_missing')
           # Patch to fix error when try to submit a NEW issue form after Rollback in facturaplus_bill_save method
@@ -54,7 +54,7 @@ module Facturaplus
         end
 
 
-        if tracker_id.to_s == Setting.plugin_redmine_facturaplus['bill_tracker'] and Setting.plugin_redmine_facturaplus['billers'].include?(biller_field.value)
+        if tracker_id.to_s == Setting.plugin_redmine_facturaplus['bill_tracker'] and SageAssociation.find_by_source_id_and_data_type(biller_field.value, 'Biller').present?
           # Es una factura emitida por una empresa con Facturaplus
           if (Setting.plugin_redmine_facturaplus['billed_statuses'].include?(status_id.to_s) or Setting.plugin_redmine_facturaplus['billable_statuses'].include?(status_id.to_s)) and !Setting.plugin_redmine_facturaplus['bill_types'].include?(bill_type_field.value)
             # El ticket va a pasar a estado facturable o facturado pero no es de tipo factura -> ERROR
@@ -65,7 +65,7 @@ module Facturaplus
             raise ActiveRecord::Rollback
           elsif !Setting.plugin_redmine_facturaplus['billed_statuses'].include?(status_id.to_s)
             # El tucket está o estaba en estado NO facturado
-            biller_id = begin Facturaplus::Fp::BILLER_IDS[biller_field.value] rescue nil end
+            biller_id = begin SageAssociation.find_by_source_id_and_data_type(biller_field.value, 'Biller').target_code rescue nil end
             client_id = begin FacturaplusClient.find_by(client_name: client_field.value, biller_id: biller_id).client_id rescue nil end
             amount = begin amount_field.value.to_f rescue nil end
             currency = begin currency_field.value.to_i rescue nil end
@@ -97,7 +97,7 @@ module Facturaplus
           end
         elsif self.facturaplus_relation.present?
           # No es una factura emitada por una empresa con FacturaPlus, pero tiene elementos de FacturaPlus asociados -> borramos los elementos asociados si NO está en estado facturado o NO está emitido por una empresa con FacturaPlus       
-          results += self.destroy_order if !Setting.plugin_redmine_facturaplus['billed_statuses'].include?(status_id.to_s) or !Setting.plugin_redmine_facturaplus['billers'].include?(biller_field.value)
+          results += self.destroy_order if !Setting.plugin_redmine_facturaplus['billed_statuses'].include?(status_id.to_s) or SageAssociation.find_by_source_id_and_data_type(biller_field.value, 'Biller').blank?
         end
 
         if (res = results.flatten.find{|r| r[:result].blank?})

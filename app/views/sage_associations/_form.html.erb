@@ -1,0 +1,23 @@
+<%= error_messages_for @sage_association %>
+
+<fieldset class="box tabular">
+  <p>
+    <%= f.select :source_id, options_from_collection_for_select(@source, :id, :name, @sage_association.source_id) %>
+    <%= f.hidden_field :source_name %>
+  </p>
+  <p>
+    <%= f.text_field :target_code %>
+    <%= f.hidden_field :data_type, :value => @type %>
+  </p>
+</fieldset>
+
+<script>
+
+$(document).ready(function(){
+  $('#sage_association_source_name').val($('#sage_association_source_id option:selected').text());
+
+  $(document).on('change', '#sage_association_source_id', function(source_id){
+    $('#sage_association_source_name').val($('#sage_association_source_id option:selected').text());
+  });
+});
+</script>

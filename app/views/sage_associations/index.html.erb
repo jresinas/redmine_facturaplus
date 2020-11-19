@@ -1,0 +1,60 @@
+<h2><%=l(:"facturaplus.label_sage_associations_settings")%></h2>
+
+<div class="splitcontentleft">
+  <h2><%=l(:"facturaplus.label_articles")%></h2>
+  <div class="contextual">
+    <%= link_to l(:"facturaplus.label_new_sage_article_association"), new_sage_association_path(:type => 'Article'), :class => 'icon icon-add'  %>
+  </div>
+
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%=l(:"facturaplus.label_service_field")%></th>
+        <th><%=l(:"facturaplus.label_service_name_field")%></th>
+        <th><%=l(:"facturaplus.label_article_field")%></th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @sage_associations.where(data_type: 'Article').each do |sage_association| %>
+        <tr class="<%= cycle 'odd', 'even' %>">
+          <td><%= sage_association.source_id %></td>
+          <td><%= sage_association.source_name %></td>
+          <td><%= sage_association.target_code %></td>
+          <td><%= link_to l(:button_edit), edit_sage_association_path(sage_association, :type => 'Article'), :class => 'icon icon-edit' %></td>
+          <td><%= delete_link sage_association_path(sage_association.id) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div class="splitcontentright">
+  <h2><%=l(:"facturaplus.label_billers")%></h2>
+  <div class="contextual">
+    <%= link_to l(:"facturaplus.label_new_sage_biller_association"), new_sage_association_path(:type => 'Biller'), :class => 'icon icon-add'  %>
+  </div>
+
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%=l(:"facturaplus.label_biller_field")%></th>
+        <th><%=l(:"facturaplus.label_biller_name_field")%></th>
+        <th><%=l(:"facturaplus.label_biller_code_field")%></th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @sage_associations.where(data_type: 'Biller').each do |sage_association| %>
+        <tr class="<%= cycle 'odd', 'even' %>">
+          <td><%= sage_association.source_id %></td>
+          <td><%= sage_association.source_name %></td>
+          <td><%= sage_association.target_code %></td>
+          <td><%= link_to l(:button_edit), edit_sage_association_path(sage_association, :type => 'Biller'), :class => 'icon icon-edit' %></td>
+          <td><%= delete_link sage_association_path(sage_association.id) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
