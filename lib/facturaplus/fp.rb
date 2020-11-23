@@ -4,7 +4,7 @@ require "uri"
 module Facturaplus
 	class Fp
 		@@fplog ||= Logger.new("#{Rails.root}/log/fp.log")
-		#BILLER_IDS = {"Emergya S.C.A." => 31, "Emergya Ingeniería S.L." => 32}
+		# BILLER_IDS = {"Emergya S.C.A." => 31, "Emergya Ingeniería S.L." => 32}
 		# SERVICE_IDS = {"Desarrollo" => "01", "Consultoría" => "02", "Licencias" => "03", "Mantenimiento" => "04", "BPO" => "05", "Subcontratación" => "06", "Otros" =>"07", "Soporte" => "08", "Hardware" => "09", "I+D" => "10", "Gestión de producción" => "11", "Estructura de Producción" => "12", "Estructura" => "13", "No Clasificado" => "14", "AWS" => "15", "GCP" => "16", "GMP" => "17", "GSuite" => "18", "Alquiler" => "99"}
 		BUSINESS_DEPARTMENT_NAME = "RED"
 
@@ -23,7 +23,8 @@ module Facturaplus
 			if res[:result]
 				FacturaplusClient.transaction do
 					FacturaplusClient.destroy_all
-					save_success = FacturaplusClient.create(res[:body]['results'].map{|c| {client_name: c['name'], biller_id: c['codeEmisor'].to_i, client_id: c['code'].to_i}})
+					# save_success = FacturaplusClient.create(res[:body]['results'].map{|c| {client_name: c['name'], biller_id: c['codeEmisor'].to_i, client_id: c['code'].to_i}})
+					save_success = FacturaplusClient.create(res[:body]['results'].map{|c| {client_name: c['nombre'], biller_id: c['codigoEmpresa'].to_i, client_id: c['codigoCliente'].to_i}})
 					res[:options] = res[:body]['results'].map{|c| c['name']}.uniq.sort
 					raise ActiveRecord::Rollback if !save_success
 				end
