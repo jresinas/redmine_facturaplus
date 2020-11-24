@@ -25,7 +25,7 @@ module Facturaplus
 					FacturaplusClient.destroy_all
 					# save_success = FacturaplusClient.create(res[:body]['results'].map{|c| {client_name: c['name'], biller_id: c['codeEmisor'].to_i, client_id: c['code'].to_i}})
 					save_success = FacturaplusClient.create(res[:body]['results'].map{|c| {client_name: c['nombre'], biller_id: c['codigoEmpresa'].to_i, client_id: c['codigoCliente'].to_i}})
-					res[:options] = res[:body]['results'].map{|c| c['name']}.uniq.sort
+					res[:options] = res[:body]['results'].map{|c| c['nombre']}.uniq.sort
 					raise ActiveRecord::Rollback if !save_success
 				end
 			end
@@ -225,7 +225,6 @@ module Facturaplus
 		end
 
 		def self.get_service_id(issue)
-			binding.pry
 			begin
 				SageAssociation.find_by(source_id: issue.project.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['service_field']).value, data_type: 'Article').target_code
 			rescue
