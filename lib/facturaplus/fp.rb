@@ -12,6 +12,7 @@ module Facturaplus
 			Setting.plugin_redmine_facturaplus['bill_tracker'].present? and 
 				Setting.plugin_redmine_facturaplus['biller_field'].present? and 
 				Setting.plugin_redmine_facturaplus['service_field'].present? and
+				Setting.plugin_redmine_facturaplus['currency_field'].present? and
 				Setting.plugin_redmine_facturaplus['client_field'].present? and
 				Setting.plugin_redmine_facturaplus['billable_statuses'].present? and
 				Setting.plugin_redmine_facturaplus['billed_statuses'].present?
@@ -43,7 +44,7 @@ module Facturaplus
 				:empresaEmisora => get_biller_id(issue).to_s,
 				:cliente => get_client_id(issue).to_s.rjust(6,'0'),
 				:codDivisa => get_currency_id(issue),
-				:valDivisaEuro => get_currency_exchange(issue),
+				#:valDivisaEuro => get_currency_exchange(issue),
 				:cref => get_service_id(issue),
 				#:areaGeografica => get_market_name(issue),
 				:unidadNegocio => get_business_unit_name(issue),
@@ -75,7 +76,7 @@ module Facturaplus
 				:empresaEmisora => get_biller_id(issue).to_s,
 				:cliente => get_client_id(issue).to_s.rjust(6,'0'),
 				:codDivisa => get_currency_id(issue),
-				:valDivisaEuro => get_currency_exchange(issue),
+				#:valDivisaEuro => get_currency_exchange(issue),
 				:cref => get_service_id(issue),
 				#:areaGeografica => get_market_name(issue),
 				:unidadNegocio => get_business_unit_name(issue),
@@ -186,7 +187,7 @@ module Facturaplus
 
 		def self.get_vat(issue)
 			begin
-				(get_currency_id(issue) == "1") ? issue.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['vat_field']).value : 0.0
+				issue.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['vat_field']).value
 			rescue
 				nil
 			end
@@ -202,7 +203,7 @@ module Facturaplus
 
 		def self.get_currency_id(issue)
 			begin
-				issue.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['currency_field']).value
+				SageAssociation.find_by(source_id: issue.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['currency_field']).value, data_type: 'Currency').target_code
 			rescue
 				nil
 			end

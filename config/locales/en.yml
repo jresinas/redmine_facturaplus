@@ -44,20 +44,25 @@ en:
     email_subject: Error while synchronize with FacturaPlus
     email_subject: Bill changes
 
-    label_sage_associations_settings: Manage relations between Redmine and Sage values
+    label_sage_associations_settings: Manage integration relations between Redmine and Sage values
     label_article_field: Article
     label_articles: Articles
     label_service_name_field: Service name
     label_biller_name_field: Biller name
     label_biller_code_field: Code
-    label_new_sage_article: New Sage article
-    label_edit_sage_article: Edit Sage article
-    label_new_sage_biller: New Sage biller
-    label_edit_sage_biller: Edit Sage biller
-    sage_articles:
-        text_create_notice: Sage article was successfully created.
-        text_update_notice: Sage article was successfully updated.
-        text_delete_notice_success: Sage article was successfully destroyed.
+    label_currencies: Currencies
+    label_currency_name_field: Currency name
+    label_currency_code_field: Code
+    label_new_sage_article_association: New Sage article
+    label_edit_sage_article_association: Edit Sage article
+    label_new_sage_biller_association: New Sage biller
+    label_edit_sage_biller_association: Edit Sage biller
+    label_new_sage_currency_association: New Sage currency
+    label_edit_sage_currency_association: Edit Sage currency
+    sage_associations:
+        text_create_notice: Sage association was successfully created.
+        text_update_notice: Sage association was successfully updated.
+        text_delete_notice_success: Sage association was successfully destroyed.
 
     text_sync_success: FacturaPlus synchronization was succesful
     text_sync_fail: An error occurred while Redmine was synchronizing with FacturaPlus

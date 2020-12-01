@@ -28,6 +28,33 @@
       <% end %>
     </tbody>
   </table>
+  <h2><%=l(:"facturaplus.label_currencies")%></h2>
+  <div class="contextual">
+    <%= link_to l(:"facturaplus.label_new_sage_currency_association"), new_sage_association_path(:type => 'Currency'), :class => 'icon icon-add'  %>
+  </div>
+
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%=l(:"facturaplus.label_currency_field")%></th>
+        <th><%=l(:"facturaplus.label_currency_name_field")%></th>
+        <th><%=l(:"facturaplus.label_currency_code_field")%></th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @sage_associations.where(data_type: 'Currency').each do |sage_association| %>
+        <tr class="<%= cycle 'odd', 'even' %>">
+          <td><%= sage_association.source_id %></td>
+          <td><%= sage_association.source_name %></td>
+          <td><%= sage_association.target_code %></td>
+          <td><%= link_to l(:button_edit), edit_sage_association_path(sage_association, :type => 'Currency'), :class => 'icon icon-edit' %></td>
+          <td><%= delete_link sage_association_path(sage_association.id) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
 <div class="splitcontentright">
   <h2><%=l(:"facturaplus.label_billers")%></h2>
