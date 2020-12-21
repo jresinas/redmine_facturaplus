@@ -53,12 +53,21 @@ es:
     label_currencies: Divisas
     label_currency_name_field: Nombre de la divisa
     label_currency_code_field: Código
+    label_section_field: Sección
+    label_sections: Secciones
+    label_section_code_field: Código sección
+    label_sage_projects: Proyectos
+    label_sage_project_code_field: Código proyecto
     label_new_sage_article_association: Nuevo artículo Sage
     label_edit_sage_article_association: Modificar artículo Sage
     label_new_sage_biller_association: Nuevo emisor Sage
     label_edit_sage_biller_association: Modificar emisor Sage
     label_new_sage_currency_association: Nueva divisa Sage
     label_edit_sage_currency_association: Modificar divisa Sage
+    label_new_sage_section_association: Nueva sección Sage
+    label_edit_sage_section_association: Modificar sección Sage
+    label_new_sage_project_association: Nuevo proyecto Sage
+    label_edit_sage_project_association: Modificar proyecto Sage
     sage_associations:
         text_create_notice: La asociación con Sage ha sido creado exitosamente.
         text_update_notice: La asociación con se ha editado con éxito.

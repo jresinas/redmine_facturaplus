@@ -47,8 +47,8 @@ module Facturaplus
 				#:valDivisaEuro => get_currency_exchange(issue),
 				:cref => get_service_id(issue),
 				#:areaGeografica => get_market_name(issue),
-				:unidadNegocio => get_business_unit_name(issue),
-				:lineaNegocio => get_business_line_name(issue),
+				:unidadNegocio => get_business_unit_id(issue),
+				:lineaNegocio => get_business_line_id(issue),
 				:departamentoNegocio => get_business_department_name(issue)
 			}
 			res = facturaplus_request(get_endpoint('set_order_endpoint'), params, 'post')
@@ -79,8 +79,8 @@ module Facturaplus
 				#:valDivisaEuro => get_currency_exchange(issue),
 				:cref => get_service_id(issue),
 				#:areaGeografica => get_market_name(issue),
-				:unidadNegocio => get_business_unit_name(issue),
-				:lineaNegocio => get_business_line_name(issue),
+				:unidadNegocio => get_business_unit_id(issue),
+				:lineaNegocio => get_business_line_id(issue),
 				:departamentoNegocio => get_business_department_name(issue)
 			}
 			res = facturaplus_request(get_endpoint('set_delivery_note_endpoint'), params, 'post')
@@ -249,9 +249,25 @@ module Facturaplus
 			end
 		end
 
+		def self.get_business_unit_id(issue)
+			begin
+				SageAssociation.find_by(source_id: issue.project.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['business_unit_field']).value, data_type: 'Section').target_code
+			rescue
+				nil
+			end
+		end
+
 		def self.get_business_line_name(issue)
 			begin
 				Enumeration.find(issue.project.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['business_line_field']).value).name
+			rescue
+				nil
+			end
+		end
+
+		def self.get_business_line_id(issue)
+			begin
+				SageAssociation.find_by(source_id: issue.project.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['business_line_field']).value, data_type: 'SageProject').target_code
 			rescue
 				nil
 			end

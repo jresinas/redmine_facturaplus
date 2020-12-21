@@ -88,6 +88,10 @@ class SageAssociationsController < ApplicationController
           get_source_billers
       when 'Currency'
           get_source_currencies
+      when 'Section'
+          get_source_business_units
+      when 'SageProject'
+          get_source_business_lines
       end
     end
 
@@ -101,5 +105,13 @@ class SageAssociationsController < ApplicationController
 
     def get_source_currencies
       @source = IssueCustomField.find(Setting.plugin_redmine_facturaplus['currency_field']).enumerations
+    end
+
+    def get_source_business_units
+      @source = ProjectCustomField.find(Setting.plugin_redmine_facturaplus['business_unit_field']).enumerations
+    end
+
+    def get_source_business_lines
+      @source = ProjectCustomField.find(Setting.plugin_redmine_facturaplus['business_line_field']).enumerations
     end
 end
