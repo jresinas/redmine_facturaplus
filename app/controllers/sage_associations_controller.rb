@@ -92,6 +92,8 @@ class SageAssociationsController < ApplicationController
           get_source_business_units
       when 'SageProject'
           get_source_business_lines
+      when 'Serial'
+          get_source_sage_projects
       end
     end
 
@@ -113,5 +115,9 @@ class SageAssociationsController < ApplicationController
 
     def get_source_business_lines
       @source = ProjectCustomField.find(Setting.plugin_redmine_facturaplus['business_line_field']).enumerations
+    end
+
+    def get_source_sage_projects
+      @source = SageAssociation.select("id, source_name AS name").where("data_type = ?",'SageProject')
     end
 end

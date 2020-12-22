@@ -56,8 +56,11 @@ es:
     label_section_field: Sección
     label_sections: Secciones
     label_section_code_field: Código sección
+    label_sage_project_field: Proyecto
     label_sage_projects: Proyectos
     label_sage_project_code_field: Código proyecto
+    label_serial_field: Serie
+    label_serials: Series
     label_new_sage_article_association: Nuevo artículo Sage
     label_edit_sage_article_association: Modificar artículo Sage
     label_new_sage_biller_association: Nuevo emisor Sage
@@ -68,6 +71,8 @@ es:
     label_edit_sage_section_association: Modificar sección Sage
     label_new_sage_project_association: Nuevo proyecto Sage
     label_edit_sage_project_association: Modificar proyecto Sage
+    label_new_sage_serial_association: Nueva serie Sage
+    label_edit_sage_serial_association: Modificar serie Sage
     sage_associations:
         text_create_notice: La asociación con Sage ha sido creado exitosamente.
         text_update_notice: La asociación con se ha editado con éxito.

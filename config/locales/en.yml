@@ -56,8 +56,11 @@ en:
     label_section_field: Section
     label_sections: Sections
     label_section_code_field: Section Code
+    label_sage_project_field: Project
     label_sage_projects: Projects
     label_sage_project_code_field: Project Code
+    label_serial_field: Serial
+    label_serials: Serials
     label_new_sage_article_association: New Sage article
     label_edit_sage_article_association: Edit Sage article
     label_new_sage_biller_association: New Sage biller
@@ -68,6 +71,8 @@ en:
     label_edit_sage_section_association: Edit Sage section
     label_new_sage_project_association: New Sage project
     label_edit_sage_project_association: Edit Sage project
+    label_new_sage_serial_association: New Sage serial
+    label_edit_sage_serial_association: Edit Sage serial
     sage_associations:
         text_create_notice: Sage association was successfully created.
         text_update_notice: Sage association was successfully updated.

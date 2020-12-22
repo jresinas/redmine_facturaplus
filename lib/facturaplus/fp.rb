@@ -49,7 +49,8 @@ module Facturaplus
 				#:areaGeografica => get_market_name(issue),
 				:unidadNegocio => get_business_unit_id(issue),
 				:lineaNegocio => get_business_line_id(issue),
-				:departamentoNegocio => get_business_department_name(issue)
+				:departamentoNegocio => get_business_department_name(issue),
+				:serie => get_order_serial_code(issue)
 			}
 			res = facturaplus_request(get_endpoint('set_order_endpoint'), params, 'post')
 
@@ -81,7 +82,8 @@ module Facturaplus
 				#:areaGeografica => get_market_name(issue),
 				:unidadNegocio => get_business_unit_id(issue),
 				:lineaNegocio => get_business_line_id(issue),
-				:departamentoNegocio => get_business_department_name(issue)
+				:departamentoNegocio => get_business_department_name(issue),
+				:serie => get_order_serial_code(issue)
 			}
 			res = facturaplus_request(get_endpoint('set_delivery_note_endpoint'), params, 'post')
 
@@ -276,6 +278,14 @@ module Facturaplus
 		def self.get_business_department_name(issue)
 			begin
 				BUSINESS_DEPARTMENT_NAME
+			rescue
+				nil
+			end
+		end
+
+		def self.get_order_serial_code(issue)
+			begin
+				SageAssociation.get_project_serial_from_business_line(issue.project.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['business_line_field']).value).target_code
 			rescue
 				nil
 			end
