@@ -83,7 +83,8 @@ module Facturaplus
 				:unidadNegocio => get_business_unit_id(issue),
 				:lineaNegocio => get_business_line_id(issue),
 				:departamentoNegocio => get_business_department_name(issue),
-				:serie => get_order_serial_code(issue)
+				:serie => get_order_serial_code(issue),
+				:ejercicioPedido => get_order_year(issue)
 			}
 			res = facturaplus_request(get_endpoint('set_delivery_note_endpoint'), params, 'post')
 
@@ -139,7 +140,7 @@ module Facturaplus
 				:empresaEmisora => issue.facturaplus_relation[:biller_id].to_s,
 				:numPedido => issue.facturaplus_relation[:order_id]
 			}
-			res = facturaplus_request(get_endpoint('has_existing_invoice'), params, 'get')
+			res = facturaplus_request(get_endpoint('has_existing_invoice_endpoint'), params, 'get')
 
 			if res[:result] and Setting.plugin_redmine_facturaplus['billable_statuses'].include?(issue.status.id.to_s)
 				issue.update_attribute('status', IssueStatus.find(Setting.plugin_redmine_facturaplus['billed_statuses']).first) #Facturado
@@ -286,6 +287,14 @@ module Facturaplus
 		def self.get_order_serial_code(issue)
 			begin
 				SageAssociation.get_project_serial_from_business_line(issue.project.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['business_line_field']).value).target_code
+			rescue
+				nil
+			end
+		end
+
+		def self.get_order_year(issue)
+			begin
+				Date.strptime(issue.custom_values.find_by(custom_field_id: Setting.plugin_redmine_facturaplus['billing_date_field']).value, '%Y-%m-%d').year
 			rescue
 				nil
 			end
