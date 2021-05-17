@@ -50,7 +50,8 @@ module Facturaplus
 				:unidadNegocio => get_business_unit_id(issue),
 				:lineaNegocio => get_business_line_id(issue),
 				:departamentoNegocio => get_business_department_name(issue),
-				:serie => get_order_serial_code(issue)
+				:serie => get_order_serial_code(issue),
+				:ejercicioPedido => get_order_year(issue)
 			}
 			res = facturaplus_request(get_endpoint('set_order_endpoint'), params, 'post')
 
