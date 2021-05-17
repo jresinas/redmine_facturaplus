@@ -87,7 +87,8 @@ module Facturaplus
 				:serie => get_order_serial_code(issue),
 				:ejercicioPedido => get_order_year(issue)
 			}
-			res = facturaplus_request(get_endpoint('set_delivery_note_endpoint'), params, 'post')
+			# res = facturaplus_request(get_endpoint('set_delivery_note_endpoint'), params, 'post')
+			res = facturaplus_request(get_endpoint('serve_order_to_delivery_note_endpoint'), params, 'post')
 
 			if res[:result]
 				if issue.facturaplus_relation.present?

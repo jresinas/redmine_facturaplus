@@ -43,6 +43,7 @@ en:
     label_auto_delete_order: Auto delete orders
     email_subject: Error while synchronize with FacturaPlus
     email_subject: Bill changes
+    label_serve_order_to_delivery_note: Serve order to delivery note
 
     label_sage_associations_settings: Manage integration relations between Redmine and Sage values
     label_article_field: Article

@@ -284,6 +284,10 @@
 				<label><%=l(:"facturaplus.delete_delivery_note")%></label>
 				<%= text_field_tag 'settings[delete_delivery_note_endpoint]', @settings['delete_delivery_note_endpoint'] %>
 			</p>
+			<p>
+				<label><%=l(:"facturaplus.label_serve_order_to_delivery_note")%></label>
+				<%= text_field_tag 'settings[serve_order_to_delivery_note_endpoint]', @settings['serve_order_to_delivery_note_endpoint'] %>
+			</p>
 		</fieldset>
 
 		<fieldset>
