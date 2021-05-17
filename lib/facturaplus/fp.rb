@@ -119,12 +119,14 @@ module Facturaplus
 
 		def self.delete_delivery_note(issue)
 			params = {
-				:numAlbaran => issue.facturaplus_relation[:delivery_note_id],
+				:serieAlbaran => get_order_serial_code(issue),
 				# :empresaEmisora => get_biller_id(issue).to_s,
 				:empresaEmisora => issue.facturaplus_relation[:biller_id].to_s,
-				:numPedido => issue.facturaplus_relation[:order_id]
+				:numPedido => issue.facturaplus_relation[:order_id],
+				:ejercicioAlbaran => get_order_year(issue)
 			}
-			res = facturaplus_request(get_endpoint('delete_delivery_note_endpoint'), params, 'delete')
+			#res = facturaplus_request(get_endpoint('delete_delivery_note_endpoint'), params, 'delete')
+			res = facturaplus_request(get_endpoint('delete_order_to_delivery_note_relation_endpoint'), params, 'delete')
 
 			if res[:result]
 				if issue.facturaplus_relation.present?
