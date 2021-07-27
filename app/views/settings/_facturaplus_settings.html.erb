@@ -77,6 +77,12 @@
 			<%= select_tag 'settings[business_line_field]', ('<option></option>'+options_from_collection_for_select(ProjectCustomField.where(field_format: 'enumeration'), :id, :name, @settings['business_line_field'].to_i)).html_safe %>
 		</p>
 
+		<p>
+			<label><%=l(:"facturaplus.label_bill_obsolescence_date")%></label>
+			<%= text_field_tag 'settings[bill_obsolescence_date]', @settings['bill_obsolescence_date'], :size => 10 %>
+			<%= calendar_for('settings_bill_obsolescence_date') %>
+		</p>
+
 		<script>
 			$('#settings_bill_tracker').change(function(){
 				$('#settings_amount_field').load('/settings/show_tracker_custom_fields/float', {tracker: $('#settings_bill_tracker').val()});

@@ -115,14 +115,14 @@ module Facturaplus
       def destroy_order
         result = []
         result << destroy_delivery_note
-        result << Facturaplus::Fp.delete_order(self) if self.facturaplus_relation.order_id.present?
+        result << Facturaplus::Fp.delete_order(self) if self.facturaplus_relation.order_id.present? and !is_bill_obsolete?
         self.facturaplus_relation = nil if self.facturaplus_relation.present?
         result
       end
 
       def destroy_delivery_note
         result = []
-        result << Facturaplus::Fp.delete_delivery_note(self) if self.facturaplus_relation.delivery_note_id.present?
+        result << Facturaplus::Fp.delete_delivery_note(self) if self.facturaplus_relation.delivery_note_id.present? and !is_bill_obsolete?
         self.facturaplus_relation.delivery_note_id = nil if self.facturaplus_relation.present? and !self.facturaplus_relation.destroyed?
         result
       end
@@ -143,6 +143,15 @@ module Facturaplus
         create_order(biller_id, client_id, amount, currency) if self.facturaplus_relation.blank?
         result << Facturaplus::Fp.set_delivery_note(self) if self.facturaplus_relation.delivery_note_id.blank?
         result
+      end
+
+      def is_bill_obsolete?
+        if Setting.plugin_redmine_facturaplus['bill_obsolescence_date'].present?
+          obsolescence_date = Date.parse(Setting.plugin_redmine_facturaplus['bill_obsolescence_date'])
+          obsolescence_date > self.created_on and obsolescence_date > self.updated_on
+        else
+          false
+        end
       end
     end
   end

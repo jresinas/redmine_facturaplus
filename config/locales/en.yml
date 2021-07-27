@@ -45,6 +45,7 @@ en:
     email_subject: Bill changes
     label_serve_order_to_delivery_note: Serve order to delivery note
     label_delete_order_to_delivery_note_relation: Delete order to delivery note relation
+    label_bill_obsolescence_date: Bill obsolescence date
 
     label_sage_associations_settings: Manage integration relations between Redmine and Sage values
     label_article_field: Article

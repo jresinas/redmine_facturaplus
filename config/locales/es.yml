@@ -45,6 +45,7 @@ es:
     email_subject: Cambios en facturas
     label_serve_order_to_delivery_note: Servir pedido para albarán
     label_delete_order_to_delivery_note_relation: Eliminar relación pedido-albarán
+    label_bill_obsolescence_date: Fecha de obsolescencia de factura
 
     label_sage_associations_settings: Gestionar relaciones de integración entre valores de Redmine y de Sage
     label_article_field: Artículo
