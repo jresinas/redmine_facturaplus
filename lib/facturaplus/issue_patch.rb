@@ -44,8 +44,12 @@ module Facturaplus
         amount_field = self.custom_values.find_by(custom_field: Setting.plugin_redmine_facturaplus['amount_field'])
         currency_field = self.custom_values.find_by(custom_field: Setting.plugin_redmine_facturaplus['currency_field'])
         bill_type_field = self.custom_values.find_by(custom_field: Setting.plugin_redmine_facturaplus['bill_type_field'])
+        billing_date_field = self.custom_values.find_by(custom_field: Setting.plugin_redmine_facturaplus['billing_date_field'])
+        service_field = self.project.custom_values.find_by(custom_field: Setting.plugin_redmine_facturaplus['service_field'])
+        business_unit_field = self.project.custom_values.find_by(custom_field: Setting.plugin_redmine_facturaplus['business_unit_field'])
+        business_line_field = self.project.custom_values.find_by(custom_field: Setting.plugin_redmine_facturaplus['business_line_field'])
         
-        if tracker_id.to_s == Setting.plugin_redmine_facturaplus['bill_tracker'] and (!biller_field.present? or !client_field.present? or !amount_field.present? or !currency_field.present? or !bill_type_field.present?) and SageAssociation.find_by_source_id_and_data_type(biller_field.value, 'Biller').present?
+        if tracker_id.to_s == Setting.plugin_redmine_facturaplus['bill_tracker'] and (!biller_field.present? or !client_field.present? or !amount_field.present? or !currency_field.present? or !bill_type_field.present? or !billing_date_field.present?) and SageAssociation.find_by_source_id_and_data_type(biller_field.value, 'Biller').present?
           # Faltan campos requeridos en el ticket
           errors[:base] << I18n.t('facturaplus.text_fields_missing')
           # Patch to fix error when try to submit a NEW issue form after Rollback in facturaplus_bill_save method
@@ -53,6 +57,13 @@ module Facturaplus
           raise ActiveRecord::Rollback
         end
 
+        if tracker_id.to_s == Setting.plugin_redmine_facturaplus['bill_tracker'] and (!service_field.present? or !business_unit_field.present? or !business_line_field.present?) and SageAssociation.find_by_source_id_and_data_type(biller_field.value, 'Biller').present?
+          #Faltan campos requeridos en el proyecto
+          errors[:base] << I18n.t('facturaplus.text_project_fields_missing')
+          # Patch to fix error when try to submit a NEW issue form after Rollback in facturaplus_bill_save method
+          self.destroy if @new_bill.present?
+          raise ActiveRecord::Rollback
+        end
 
         if tracker_id.to_s == Setting.plugin_redmine_facturaplus['bill_tracker'] and SageAssociation.find_by_source_id_and_data_type(biller_field.value, 'Biller').present?
           # Es una factura emitida por una empresa con Facturaplus

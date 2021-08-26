@@ -86,3 +86,4 @@ es:
     text_biller_client_not_valid: El Cliente y/o Empresa seleccionados no son válidos. Por favor, asegúrese que el Cliente indicado está habilitado para la Empresa seleccionada en FacturaPlus.
     text_fields_missing: Hay campos requeridos que no están siendo mostrados
     text_not_a_bill: 'Por favor, para pasar al estado seleccionado cambie el "Tipo de Factura" a "Factura"'
+    text_project_fields_missing: Hay campos requeridos de la configuración del Proyecto que están vacíos (Servicio, unidad de negocio y línea de negocio)

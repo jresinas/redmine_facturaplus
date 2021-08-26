@@ -86,3 +86,4 @@ en:
     text_biller_client_not_valid: Client and/or Biller selected are not valid. Please, be sure that Client is enabled for Biller in FacturaPlus
     text_fields_missing: There are some required fields missing
     text_not_a_bill: 'Please, to change to the selected state, change the "Bill Type" to "Bill"'
+    text_project_fields_missing: There are some required fields missing in the project configuration (Service, business unit or business line)
