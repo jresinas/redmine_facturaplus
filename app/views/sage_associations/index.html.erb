@@ -97,6 +97,7 @@
         <th><%=l(:"facturaplus.label_biller_field")%></th>
         <th><%=l(:"facturaplus.label_biller_name_field")%></th>
         <th><%=l(:"facturaplus.label_biller_code_field")%></th>
+        <th><%=l(:"facturaplus.label_biller_status_field")%></th>
         <th colspan="3"></th>
       </tr>
     </thead>
@@ -107,6 +108,7 @@
           <td><%= sage_association.source_id %></td>
           <td><%= sage_association.source_name %></td>
           <td><%= sage_association.target_code %></td>
+          <td><%= sage_association.status == 1 ? '✓' : '' %>
           <td><%= link_to l(:button_edit), edit_sage_association_path(sage_association, :type => 'Biller'), :class => 'icon icon-edit' %></td>
           <td><%= delete_link sage_association_path(sage_association.id) %></td>
         </tr>

@@ -53,6 +53,7 @@ en:
     label_service_name_field: Service name
     label_biller_name_field: Biller name
     label_biller_code_field: Code
+    label_biller_status_field: Invoice?
     label_currencies: Currencies
     label_currency_name_field: Currency name
     label_currency_code_field: Code

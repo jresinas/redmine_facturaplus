@@ -71,7 +71,7 @@ class SageAssociationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def sage_association_params
-      params.require(:sage_association).permit(:source_id, :source_name, :target_code, :data_type)
+      params.require(:sage_association).permit(:source_id, :source_name, :target_code, :data_type, :status)
     end
 
     # Obtiene el tipo de elemento que se está modificando (articles o billers)

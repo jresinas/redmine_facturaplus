@@ -53,6 +53,7 @@ es:
     label_service_name_field: Nombre del servicio
     label_biller_name_field: Nombre del emisor
     label_biller_code_field: Código
+    label_biller_status_field: ¿Factura?
     label_currencies: Divisas
     label_currency_name_field: Nombre de la divisa
     label_currency_code_field: Código

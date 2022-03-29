@@ -5,6 +5,7 @@ class CreateSageAssociations < ActiveRecord::Migration
       t.column :source_name, :string, :null => false
       t.column :target_code, :string, :null => false
       t.column :data_type, :string, :null => false
+      t.column :status, :integer, :null => true, :default => 1
     end
   end
 

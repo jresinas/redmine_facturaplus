@@ -25,7 +25,7 @@ module Facturaplus
 				FacturaplusClient.transaction do
 					FacturaplusClient.destroy_all
 					# save_success = FacturaplusClient.create(res[:body]['results'].map{|c| {client_name: c['name'], biller_id: c['codeEmisor'].to_i, client_id: c['code'].to_i}})
-					save_success = FacturaplusClient.create(res[:body]['results'].map{|c| {client_name: c['nombre'], biller_id: c['codigoEmpresa'].to_i, client_id: c['codigoCliente'].to_i}})
+					save_success = FacturaplusClient.create(res[:body]['results'].map{|c| {client_name: c['nombre'], biller_id: c['codigoEmpresa'].to_i, client_id: c['codigoCliente'].to_i, iris_code: c['codigoEmpresa'].rjust(2, '0') + c['codigoCliente'].rjust(6, '0')}})
 					res[:options] = res[:body]['results'].map{|c| c['nombre']}.uniq.sort
 					raise ActiveRecord::Rollback if !save_success
 				end

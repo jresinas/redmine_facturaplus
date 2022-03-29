@@ -9,6 +9,16 @@
     <%= f.text_field :target_code %>
     <%= f.hidden_field :data_type, :value => @type %>
   </p>
+  <% if @type == 'Biller' %>
+    <p>
+      <%= f.radio_button :status, 1, :checked => true %>
+      <%= f.label :status, 'Disponible para facturar', :value => 1 %>
+    </p>      
+    <p>
+      <%= f.radio_button :status, 2 %>
+      <%= f.label :status, 'Solo listado', :value => 2 %>
+    </p>
+  <% end %>
 </fieldset>
 
 <script>
