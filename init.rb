@@ -13,8 +13,8 @@ Redmine::Plugin.register :redmine_facturaplus do
     I18n.with_locale(locale) do
       name I18n.t :'facturaplus.plugin_name'
       description I18n.t :'facturaplus.plugin_description'
-      author 'Emergya Consultoría'
-      version '0.0.1'
+      author 'Emergya'
+      version '0.0.2'
     end
   end
 
