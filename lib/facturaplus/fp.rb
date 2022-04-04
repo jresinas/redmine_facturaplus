@@ -25,7 +25,7 @@ module Facturaplus
 				FacturaplusClient.transaction do
 					FacturaplusClient.destroy_all
 					# save_success = FacturaplusClient.create(res[:body]['results'].map{|c| {client_name: c['name'], biller_id: c['codeEmisor'].to_i, client_id: c['code'].to_i}})
-					save_success = FacturaplusClient.create(res[:body]['results'].map{|c| {client_name: c['nombre'], biller_id: c['codigoEmpresa'].to_i, client_id: c['codigoCliente'].to_i, iris_code: c['codigoEmpresa'].to_s.rjust(4, '0') + c['codigoCliente'].to_s.rjust(8, '0')}})
+					save_success = FacturaplusClient.create(res[:body]['results'].map{|c| {client_name: c['nombre'].rstrip, biller_id: c['codigoEmpresa'].to_i, client_id: c['codigoCliente'].to_i, iris_code: c['codigoEmpresa'].to_s.rjust(4, '0') + c['codigoCliente'].to_s.rjust(8, '0')}})
 					res[:options] = res[:body]['results'].map{|c| c['nombre']}.uniq.sort
 					raise ActiveRecord::Rollback if !save_success
 				end
@@ -40,7 +40,7 @@ module Facturaplus
 				:iva => get_vat(issue).to_f,
 				:idTicket => issue.id.to_s,
 				:fechaFacturacion => get_billing_date(issue),
-				:asunto => issue.subject[0,50].gsub('–','-'),
+				:asunto => issue.subject.mb_chars.limit(50).to_s.rstrip.gsub('–','-'),
 				:empresaEmisora => get_biller_id(issue).to_s,
 				:cliente => get_client_id(issue).to_s.rjust(6,'0'),
 				:codDivisa => get_currency_id(issue),
@@ -74,7 +74,7 @@ module Facturaplus
 				:iva => get_vat(issue).to_f,
 				:idTicket => issue.id.to_s,
 				:fechaFacturacion => get_billing_date(issue),
-				:asunto => issue.subject[0,50].gsub('–','-'),
+				:asunto => issue.subject.mb_chars.limit(50).to_s.rstrip.gsub('–','-'),
 				:empresaEmisora => get_biller_id(issue).to_s,
 				:cliente => get_client_id(issue).to_s.rjust(6,'0'),
 				:codDivisa => get_currency_id(issue),
