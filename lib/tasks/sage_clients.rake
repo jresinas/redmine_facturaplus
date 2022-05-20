@@ -5,7 +5,9 @@ namespace :facturaplus do
 		headers = ["Nombre Cliente facturacion en Redmine","id Empresa Redmine","id Cliente en Sage","id combinado iris"]
 		results = [headers]
 
-		facturaplus_clients = FacturaplusClient.all
+		sage_billers = SageAssociation.where(data_type: 'Biller').pluck(:target_code)
+
+		facturaplus_clients = FacturaplusClient.where(:biller_id => sage_billers)
 
 		facturaplus_clients.each do |fc|
 			result = []
